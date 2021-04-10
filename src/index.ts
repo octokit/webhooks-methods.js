@@ -1,7 +1,5 @@
 import { VERSION } from "./version";
-
-export function sign() {}
-sign.VERSION = VERSION;
+export { sign } from "./node/sign";
 
 export function verify() {}
 verify.VERSION = VERSION;
