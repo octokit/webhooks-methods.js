@@ -1,6 +1,6 @@
 import { sign } from "../src";
 
-describe("Smoke test", () => {
+describe("sign", () => {
   it("is a function", () => {
     expect(sign).toBeInstanceOf(Function);
   });
