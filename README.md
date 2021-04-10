@@ -11,6 +11,9 @@
 <!-- toc -->
 
 - [usage](#usage)
+- [Methods](#methods)
+  - [`sign()`](#sign)
+  - [`verify()`](#verify)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -68,6 +71,114 @@ await sign({ secret: "mysecret", algorithm: "sha1" }, eventPayload);
 await verify("mysecret", eventPayload, "sha256=486d27...");
 // resolves with true or false
 ```
+
+## Methods
+
+### `sign()`
+
+```js
+await sign(secret, eventPayload);
+await sign({ secret, algorithm }, eventPayload);
+```
+
+<table width="100%">
+  <tr>
+    <td>
+      <code>
+        secret
+      </code>
+      <em>(String)</em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Secret as configured in GitHub Settings.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        algorithm
+      </code>
+      <em>
+        (String)
+      </em>
+    </td>
+    <td>
+
+Algorithm to calculate signature. Can be set to `sha1` or `sha256`. `sha1` is supported for legacy reasons. GitHub Enterprise Server 2.22 and older do not send the `X-Hub-Signature-256` header. Defaults to `sha256`.
+
+Learn more at [Validating payloads from GitHub](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks#validating-payloads-from-github)
+
+</td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        eventPayload
+      </code>
+      <em>
+        (Object)
+      </em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Webhook request payload as received from GitHub
+    </td>
+  </tr>
+</table>
+
+Resolves with a `signature` string. Throws an error if an argument is missing.
+
+### `verify()`
+
+```js
+await verify(secret, eventPayload, signature);
+```
+
+<table width="100%">
+  <tr>
+    <td>
+      <code>
+        secret
+      </code>
+      <em>(String)</em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Secret as configured in GitHub Settings.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        eventPayload
+      </code>
+      <em>
+        (Object)
+      </em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Webhook request payload as received from GitHub
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        signature
+      </code>
+      <em>
+        (String)
+      </em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Signature string as calculated by <code><a href="../sign">sign()</a></code>.
+    </td>
+  </tr>
+</table>
+
+Resolves with `true` or `false`. Throws error if an argument is missing.
 
 ## Contributing
 
