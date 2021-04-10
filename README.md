@@ -10,6 +10,12 @@
 
 <!-- toc -->
 
+- [usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+<!-- tocstop -->
+
 </details>
 
 ## usage
