@@ -34,7 +34,10 @@ Load `@octokit/webhooks-methods` directly from [cdn.skypack.dev](https://cdn.sky
 
 ```html
 <script type="module">
-  import { sign } from "https://cdn.skypack.dev/@octokit/webhooks-methods";
+  import {
+    sign,
+    verify,
+  } from "https://cdn.skypack.dev/@octokit/webhooks-methods";
 </script>
 ```
 
@@ -48,7 +51,7 @@ Node
 Install with `npm install @octokit/core @octokit/webhooks-methods`
 
 ```js
-const { sign } = require("@octokit/webhooks-methods");
+const { sign, verify } = require("@octokit/webhooks-methods");
 ```
 
 </td></tr>
@@ -57,10 +60,13 @@ const { sign } = require("@octokit/webhooks-methods");
 
 ```js
 await sign("mysecret", eventPayload);
-// will resolve with a string like "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3"
+// resolves with a string like "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3"
 
 await sign({ secret: "mysecret", algorithm: "sha1" }, eventPayload);
-// will resolve with a string like "sha1=d03207e4b030cf234e3447bac4d93add4c6643d8"
+// resolves with a string like "sha1=d03207e4b030cf234e3447bac4d93add4c6643d8"
+
+await verify("mysecret", eventPayload, "sha256=486d27...");
+// resolves with true or false
 ```
 
 ## Contributing
