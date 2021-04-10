@@ -28,6 +28,8 @@ Browsers
 
 </th><td width=100%>
 
+🚧 `@octokit/webhooks-methods` is not meant to be used in browsers. The webhook secret is a sensitive credential that must not be exposed to users.
+
 Load `@octokit/webhooks-methods` directly from [cdn.skypack.dev](https://cdn.skypack.dev)
 
 ```html
