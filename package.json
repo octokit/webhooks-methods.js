@@ -1,5 +1,8 @@
 {
   "name": "@octokit/webhooks-methods",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.0-development",
   "description": "Methods to handle GitHub Webhook requests",
   "scripts": {
@@ -98,7 +101,9 @@
       ]
     ]
   },
-  "publishConfig": {
-    "access": "public"
+  "renovate": {
+    "extends": [
+      "github>octokit/.github"
+    ]
   }
 }
