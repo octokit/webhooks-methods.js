@@ -13,7 +13,7 @@ type SignOptions = {
 
 export async function sign(
   options: SignOptions | string,
-  payload: string | object
+  payload: string
 ): Promise<string> {
   const { secret, algorithm } =
     typeof options === "object"
@@ -35,17 +35,9 @@ export async function sign(
     );
   }
 
-  payload =
-    typeof payload === "string" ? payload : toNormalizedJsonString(payload);
   return `${algorithm}=${createHmac(algorithm, secret)
     .update(payload)
     .digest("hex")}`;
-}
-
-function toNormalizedJsonString(payload: object) {
-  return JSON.stringify(payload).replace(/[^\\]\\u[\da-f]{4}/g, (s) => {
-    return s.substr(0, 3) + s.substr(3).toUpperCase();
-  });
 }
 
 sign.VERSION = VERSION;
