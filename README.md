@@ -62,13 +62,13 @@ const { sign, verify } = require("@octokit/webhooks-methods");
 </table>
 
 ```js
-await sign("mysecret", eventPayload);
+await sign("mysecret", eventPayloadString);
 // resolves with a string like "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3"
 
-await sign({ secret: "mysecret", algorithm: "sha1" }, eventPayload);
+await sign({ secret: "mysecret", algorithm: "sha1" }, eventPayloadString);
 // resolves with a string like "sha1=d03207e4b030cf234e3447bac4d93add4c6643d8"
 
-await verify("mysecret", eventPayload, "sha256=486d27...");
+await verify("mysecret", eventPayloadString, "sha256=486d27...");
 // resolves with true or false
 ```
 
@@ -77,8 +77,8 @@ await verify("mysecret", eventPayload, "sha256=486d27...");
 ### `sign()`
 
 ```js
-await sign(secret, eventPayload);
-await sign({ secret, algorithm }, eventPayload);
+await sign(secret, eventPayloadString);
+await sign({ secret, algorithm }, eventPayloadString);
 ```
 
 <table width="100%">
@@ -114,15 +114,17 @@ Learn more at [Validating payloads from GitHub](https://docs.github.com/en/devel
   <tr>
     <td>
       <code>
-        eventPayload
+        eventPayloadString
       </code>
       <em>
-        (Object)
+        (String)
       </em>
     </td>
     <td>
       <strong>Required.</strong>
-      Webhook request payload as received from GitHub
+      Webhook request payload as received from GitHub.<br>
+      <br>
+      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload, null, 2) + '\n'</code>
     </td>
   </tr>
 </table>
@@ -132,7 +134,7 @@ Resolves with a `signature` string. Throws an error if an argument is missing.
 ### `verify()`
 
 ```js
-await verify(secret, eventPayload, signature);
+await verify(secret, eventPayloadString, signature);
 ```
 
 <table width="100%">
@@ -151,15 +153,17 @@ await verify(secret, eventPayload, signature);
   <tr>
     <td>
       <code>
-        eventPayload
+        eventPayloadString
       </code>
       <em>
-        (Object)
+        (String)
       </em>
     </td>
     <td>
       <strong>Required.</strong>
-      Webhook request payload as received from GitHub
+      Webhook request payload as received from GitHub.<br>
+      <br>
+      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload, null, 2) + '\n'</code>
     </td>
   </tr>
   <tr>

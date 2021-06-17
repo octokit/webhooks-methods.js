@@ -10,7 +10,7 @@ const getAlgorithm = (signature: string) => {
 
 export async function verify(
   secret: string,
-  eventPayload: string | object,
+  eventPayload: string,
   signature: string
 ): Promise<boolean> {
   if (!secret || !eventPayload || !signature) {
