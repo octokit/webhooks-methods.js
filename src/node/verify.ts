@@ -3,10 +3,7 @@ import { Buffer } from "buffer";
 
 import { sign } from "./sign";
 import { VERSION } from "../version";
-
-const getAlgorithm = (signature: string) => {
-  return signature.startsWith("sha256=") ? "sha256" : "sha1";
-};
+import { getAlgorithm } from "../utils";
 
 export async function verify(
   secret: string,
