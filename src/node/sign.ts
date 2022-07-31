@@ -1,15 +1,8 @@
 import { createHmac } from "crypto";
+import { Algorithm, SignOptions } from "../types";
 import { VERSION } from "../version";
 
-export enum Algorithm {
-  SHA1 = "sha1",
-  SHA256 = "sha256",
-}
-
-type SignOptions = {
-  secret: string;
-  algorithm?: Algorithm | "sha1" | "sha256";
-};
+export { Algorithm };
 
 export async function sign(
   options: SignOptions | string,
