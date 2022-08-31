@@ -1,0 +1,5 @@
+{
+  "deno.enable": true,
+  "deno.enablePaths": ["./test/deno"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

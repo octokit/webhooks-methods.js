@@ -10,8 +10,9 @@
     "lint": "prettier --check '{src,test}/**/*' README.md package.json",
     "lint:fix": "prettier --write '{src,test}/**/*' README.md package.json",
     "pretest": "npm run -s lint",
-    "test": "npm run -s test:node && npm run -s test:browser",
+    "test": "npm run -s test:node && npm run -s test:deno && npm run -s test:browser",
     "test:node": "jest --coverage",
+    "test:deno": "deno test",
     "pretest:browser": "npm run -s build",
     "test:browser": "node test/browser-test.js"
   },
@@ -54,7 +55,11 @@
         "functions": 100,
         "lines": 100
       }
-    }
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/test/deno/"
+    ]
   },
   "@pika/pack": {
     "pipeline": [
