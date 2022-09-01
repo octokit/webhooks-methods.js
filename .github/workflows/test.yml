@@ -32,4 +32,4 @@ jobs:
       - run: exit 1
         if: ${{ needs.test_matrix.result != 'success' }}
       - run: echo ok
-    if: ${{ always }}
+    if: ${{ always() }}
