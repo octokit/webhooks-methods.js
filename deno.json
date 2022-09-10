@@ -1,8 +1,0 @@
-{
-  "importMap": "./test/deno/importMap.json",
-  "test": {
-    "files": {
-      "include": ["test/deno"]
-    }
-  }
-}

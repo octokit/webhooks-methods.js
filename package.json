@@ -12,7 +12,7 @@
     "pretest": "npm run -s lint",
     "test": "npm run -s test:node && npm run -s test:deno && npm run -s test:browser",
     "test:node": "jest --coverage",
-    "test:deno": "deno test",
+    "test:deno": "cd test/deno && deno test",
     "pretest:browser": "npm run -s build",
     "test:browser": "node test/browser-test.js"
   },
