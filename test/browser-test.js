@@ -12,7 +12,7 @@ async function runTests() {
   await page.goto("file:///");
 
   await page.addScriptTag({
-    content: script.replace("export { sign, sign2, verify, verify2 };", ""),
+    content: script.replace("export { sign, verify };", ""),
   });
 
   const [signature, verified] = await page.evaluate(async function () {
@@ -27,25 +27,9 @@ async function runTests() {
 
   strictEqual(
     signature,
-    "1b2c16b75bd2a870c114153ccda5bcfca63314bc722fa160d690de133ccbb9db"
-  );
-  strictEqual(verified, true);
-
-  const [signature2, verified2] = await page.evaluate(async function () {
-    const signature = await sign2("secret", "data");
-    console.log(signature);
-
-    const verified = await verify2("secret", "data", signature);
-    console.log(verified);
-
-    return [signature, verified];
-  });
-
-  strictEqual(
-    signature2,
     "sha256=1b2c16b75bd2a870c114153ccda5bcfca63314bc722fa160d690de133ccbb9db"
   );
-  strictEqual(verified2, true);
+  strictEqual(verified, true);
 
   await browser.close();
 

@@ -3,14 +3,6 @@ import { getAlgorithm } from "./utils";
 
 const enc = new TextEncoder();
 
-export async function sign(secret: string, data: string) {
-  return await _sign(secret, data);
-}
-
-export async function verify(secret: string, data: string, signature: string) {
-  return await _verify(secret, data, signature);
-}
-
 async function _sign(
   secret: string,
   data: string,
@@ -80,7 +72,7 @@ async function importKey(secret: string, algorithm: AlgorithmLike) {
   );
 }
 
-export async function sign2(options: SignOptions | string, payload: string) {
+export async function sign(options: SignOptions | string, payload: string) {
   const { secret, algorithm } =
     typeof options === "object"
       ? {
@@ -104,7 +96,7 @@ export async function sign2(options: SignOptions | string, payload: string) {
   return `${algorithm}=${await _sign(secret, payload, algorithm)}`;
 }
 
-export async function verify2(
+export async function verify(
   secret: string,
   eventPayload: string,
   signature: string
