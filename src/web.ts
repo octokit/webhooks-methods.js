@@ -3,33 +3,6 @@ import { getAlgorithm } from "./utils";
 
 const enc = new TextEncoder();
 
-async function _sign(
-  secret: string,
-  data: string,
-  algorithm: AlgorithmLike = Algorithm.SHA256
-) {
-  const signature = await crypto.subtle.sign(
-    "HMAC",
-    await importKey(secret, algorithm),
-    enc.encode(data)
-  );
-  return UInt8ArrayToHex(signature);
-}
-
-async function _verify(
-  secret: string,
-  data: string,
-  signature: string,
-  algorithm: AlgorithmLike = Algorithm.SHA256
-) {
-  return await crypto.subtle.verify(
-    "HMAC",
-    await importKey(secret, algorithm),
-    hexToUInt8Array(signature),
-    enc.encode(data)
-  );
-}
-
 function hexToUInt8Array(string: string) {
   // convert string to pairs of 2 characters
   const pairs = string.match(/[\dA-F]{2}/gi) as RegExpMatchArray;
@@ -93,7 +66,13 @@ export async function sign(options: SignOptions | string, payload: string) {
     );
   }
 
-  return `${algorithm}=${await _sign(secret, payload, algorithm)}`;
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    await importKey(secret, algorithm),
+    enc.encode(payload)
+  );
+
+  return `${algorithm}=${UInt8ArrayToHex(signature)}`;
 }
 
 export async function verify(
@@ -108,10 +87,10 @@ export async function verify(
   }
 
   const algorithm = getAlgorithm(signature);
-  return await _verify(
-    secret,
-    eventPayload,
-    signature.replace(`${algorithm}=`, ""),
-    algorithm
+  return await crypto.subtle.verify(
+    "HMAC",
+    await importKey(secret, algorithm),
+    hexToUInt8Array(signature.replace(`${algorithm}=`, "")),
+    enc.encode(eventPayload)
   );
 }
