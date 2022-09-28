@@ -2,8 +2,6 @@ import { createHmac } from "crypto";
 import { Algorithm, SignOptions } from "../types";
 import { VERSION } from "../version";
 
-export { Algorithm };
-
 export async function sign(
   options: SignOptions | string,
   payload: string
