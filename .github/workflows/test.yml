@@ -23,9 +23,10 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
           cache: npm
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
+      # we currently no support deno yet.
+      # - uses: denoland/setup-deno@v1
+      #   with:
+      #     deno-version: v1.x
       - run: npm ci
       - run: npm test
   test:
