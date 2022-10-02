@@ -1,6 +1,6 @@
-// @ts-ignore because of deno compatible
+// @ts-ignore: ts(2691) for deno compatible
 import { Algorithm, AlgorithmLike, SignOptions } from "./types.ts";
-// @ts-ignore because of deno compatible
+// @ts-ignore: ts(2691) for deno compatible
 import { getAlgorithm } from "./utils.ts";
 
 const enc = new TextEncoder();
