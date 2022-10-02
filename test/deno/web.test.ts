@@ -1,5 +1,3 @@
-// we currently no support deno yet.
-
 import { sign, verify } from "../../src/web.ts";
 
 import { assertEquals } from "std/testing/asserts.ts";
