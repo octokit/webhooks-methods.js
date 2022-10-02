@@ -1,5 +1,7 @@
-import { Algorithm, AlgorithmLike, SignOptions } from "./types";
-import { getAlgorithm } from "./utils";
+// @ts-ignore because of deno compatible
+import { Algorithm, AlgorithmLike, SignOptions } from "./types.ts";
+// @ts-ignore because of deno compatible
+import { getAlgorithm } from "./utils.ts";
 
 const enc = new TextEncoder();
 
