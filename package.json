@@ -10,10 +10,11 @@
     "lint": "prettier --check '{src,test}/**/*' README.md package.json",
     "lint:fix": "prettier --write '{src,test}/**/*' README.md package.json",
     "pretest": "npm run -s lint",
-    "test": "npm run -s test:node && npm run -s test:deno && npm run -s test:browser",
+    "test": "npm run -s test:node && npm run -s test:web",
     "test:node": "jest --coverage",
+    "test:web": "npm run test:deno && npm run test:browser",
+    "pretest:web": "npm run -s build",
     "test:deno": "cd test/deno && deno test",
-    "pretest:browser": "npm run -s build",
     "test:browser": "node test/browser-test.js"
   },
   "repository": "github:octokit/webhooks-methods.js",

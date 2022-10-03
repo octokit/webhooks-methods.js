@@ -1,4 +1,4 @@
-import { sign, verify } from "../../src/web.ts";
+import { sign, verify } from "../../pkg/dist-web/index.js";
 
 import { assertEquals } from "std/testing/asserts.ts";
 
