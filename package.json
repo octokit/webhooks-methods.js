@@ -37,7 +37,7 @@
     "@pika/plugin-build-node": "^0.9.2",
     "@pika/plugin-ts-standard-pkg": "^0.9.2",
     "@types/jest": "^29.0.0",
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.0.0",
     "jest": "^29.0.0",
     "prettier": "2.7.1",
     "puppeteer": "^19.0.0",
