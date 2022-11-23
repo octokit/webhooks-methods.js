@@ -124,7 +124,7 @@ Learn more at [Validating payloads from GitHub](https://docs.github.com/en/devel
       <strong>Required.</strong>
       Webhook request payload as received from GitHub.<br>
       <br>
-      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload, null, 2) + '\n'</code>
+      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload)</code>
     </td>
   </tr>
 </table>
@@ -163,7 +163,7 @@ await verify(secret, eventPayloadString, signature);
       <strong>Required.</strong>
       Webhook request payload as received from GitHub.<br>
       <br>
-      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload, null, 2) + '\n'</code>
+      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload)</code>
     </td>
   </tr>
   <tr>
