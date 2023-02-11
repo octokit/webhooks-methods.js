@@ -108,7 +108,7 @@ describe("verify", () => {
     expect(signatureMatches).toBe(false);
   });
 
-  test("verify(secret, eventPayload, signatureSHA256) returns false for correct secret", async () => {
+  test("verify(secret, eventPayload, signatureSHA256) returns false for incorrect secret", async () => {
     const signatureMatches = await verify("foo", eventPayload, signatureSHA256);
     expect(signatureMatches).toBe(false);
   });
