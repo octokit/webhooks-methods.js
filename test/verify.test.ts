@@ -1,4 +1,4 @@
-import { verify } from "../src";
+import { verify, verifyWithFallback } from "../src";
 
 function toNormalizedJsonString(payload: object) {
   // GitHub sends its JSON with an indentation of 2 spaces and a line break at the end
@@ -108,7 +108,7 @@ describe("verify", () => {
     expect(signatureMatches).toBe(false);
   });
 
-  test("verify(secret, eventPayload, signatureSHA256) returns false for correct secret", async () => {
+  test("verify(secret, eventPayload, signatureSHA256) returns false for incorrect secret", async () => {
     const signatureMatches = await verify("foo", eventPayload, signatureSHA256);
     expect(signatureMatches).toBe(false);
   });
@@ -139,5 +139,41 @@ describe("verify", () => {
       "sha256=87316067e2011fae39998b18c46a14d83b3e7c3ffdd88fb2ee5afb7d11288e60"
     );
     expect(signatureMatchesEscapedSequence).toBe(true);
+  });
+});
+
+describe("verifyWithFallback", () => {
+  it("is a function", () => {
+    expect(verifyWithFallback).toBeInstanceOf(Function);
+  });
+
+  test("verifyWithFallback(secret, eventPayload, signatureSHA256, [bogus]) returns true", async () => {
+    const signatureMatches = await verifyWithFallback(
+      secret,
+      eventPayload,
+      signatureSHA256,
+      ["foo"]
+    );
+    expect(signatureMatches).toBe(true);
+  });
+
+  test("verifyWithFallback(bogus, eventPayload, signatureSHA256, [secret]) returns true", async () => {
+    const signatureMatches = await verifyWithFallback(
+      "foo",
+      eventPayload,
+      signatureSHA256,
+      [secret]
+    );
+    expect(signatureMatches).toBe(true);
+  });
+
+  test("verify(bogus, eventPayload, signatureSHA256, [bogus]) returns false", async () => {
+    const signatureMatches = await verifyWithFallback(
+      "foo",
+      eventPayload,
+      signatureSHA256,
+      ["foo"]
+    );
+    expect(signatureMatches).toBe(false);
   });
 });

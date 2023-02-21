@@ -14,6 +14,7 @@
 - [Methods](#methods)
   - [`sign()`](#sign)
   - [`verify()`](#verify)
+  - [`verifyWithFallback()`](#verifyWithFallback)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -40,6 +41,7 @@ Load `@octokit/webhooks-methods` directly from [cdn.skypack.dev](https://cdn.sky
   import {
     sign,
     verify,
+    verifyWithFallback,
   } from "https://cdn.skypack.dev/@octokit/webhooks-methods";
 </script>
 ```
@@ -54,7 +56,11 @@ Node
 Install with `npm install @octokit/core @octokit/webhooks-methods`
 
 ```js
-const { sign, verify } = require("@octokit/webhooks-methods");
+const {
+  sign,
+  verify,
+  verifyWithFallback,
+} = require("@octokit/webhooks-methods");
 ```
 
 </td></tr>
@@ -69,6 +75,9 @@ await sign({ secret: "mysecret", algorithm: "sha1" }, eventPayloadString);
 // resolves with a string like "sha1=d03207e4b030cf234e3447bac4d93add4c6643d8"
 
 await verify("mysecret", eventPayloadString, "sha256=486d27...");
+// resolves with true or false
+
+await verifyWithFallback("mysecret", eventPayloadString, "sha256=486d27...", ["oldsecret", ...]);
 // resolves with true or false
 ```
 
@@ -183,6 +192,78 @@ await verify(secret, eventPayloadString, signature);
 </table>
 
 Resolves with `true` or `false`. Throws error if an argument is missing.
+
+### `verifyWithFallback()`
+
+```js
+await verifyWithFallback(
+  secret,
+  eventPayloadString,
+  signature,
+  additionalSecrets
+);
+```
+
+<table width="100%">
+  <tr>
+    <td>
+      <code>
+        secret
+      </code>
+      <em>(String)</em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Secret as configured in GitHub Settings.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        eventPayloadString
+      </code>
+      <em>
+        (String)
+      </em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Webhook request payload as received from GitHub.<br>
+      <br>
+      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload)</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        signature
+      </code>
+      <em>
+        (String)
+      </em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Signature string as calculated by <code><a href="../sign">sign()</a></code>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        additionalSecrets
+      </code>
+      <em>
+        (Array of String)
+      </em>
+    </td>
+    <td>
+        If given, each additional secret will be tried in turn.
+    </td>
+  </tr>
+</table>
+
+This is a thin wrapper around [`verify()`](#verify) that is intended to ease callers' support for key rotation.
+Resolves with `true` or `false`. Throws error if a required argument is missing.
 
 ## Contributing
 
