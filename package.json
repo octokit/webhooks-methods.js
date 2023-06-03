@@ -6,7 +6,7 @@
   "version": "0.0.0-development",
   "description": "Methods to handle GitHub Webhook requests",
   "scripts": {
-    "build": "node scripts/build.mjs",
+    "build": "node scripts/build.mjs && tsc -p tsconfig.json",
     "lint": "prettier --check '{src,test,scripts}/**/*' README.md package.json",
     "lint:fix": "prettier --write '{src,test,scripts}/**/*' README.md package.json",
     "pretest": "npm run -s lint",
