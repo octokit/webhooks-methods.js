@@ -1,4 +1,4 @@
-import { Algorithm, AlgorithmLike, SignOptions } from "./types";
+import { Algorithm, type AlgorithmLike, type SignOptions } from "./types";
 import { getAlgorithm } from "./utils";
 
 const enc = new TextEncoder();
