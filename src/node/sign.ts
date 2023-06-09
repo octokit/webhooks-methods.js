@@ -1,5 +1,5 @@
 import { createHmac } from "crypto";
-import { Algorithm, SignOptions } from "../types";
+import { Algorithm, type SignOptions } from "../types";
 import { VERSION } from "../version";
 
 export async function sign(
