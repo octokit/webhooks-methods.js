@@ -14,7 +14,7 @@
 - [Methods](#methods)
   - [`sign()`](#sign)
   - [`verify()`](#verify)
-  - [`verifyWithFallback()`](#verifyWithFallback)
+  - [`verifyWithFallback()`](#verifywithfallback)
 - [Contributing](#contributing)
 - [License](#license)
 
