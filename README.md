@@ -200,7 +200,7 @@ await verifyWithFallback(
   secret,
   eventPayloadString,
   signature,
-  additionalSecrets,
+  additionalSecrets
 );
 ```
 
