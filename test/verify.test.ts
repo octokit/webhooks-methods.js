@@ -26,28 +26,28 @@ describe("verify", () => {
   test("verify() without options throws", async () => {
     // @ts-expect-error
     await expect(() => verify()).rejects.toThrow(
-      "[@octokit/webhooks-methods] secret, eventPayload & signature required"
+      "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   });
 
   test("verify(undefined, eventPayload) without secret throws", async () => {
     // @ts-expect-error
     await expect(() => verify(undefined, eventPayload)).rejects.toThrow(
-      "[@octokit/webhooks-methods] secret, eventPayload & signature required"
+      "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   });
 
   test("verify(secret) without eventPayload throws", async () => {
     // @ts-expect-error
     await expect(() => verify(secret)).rejects.toThrow(
-      "[@octokit/webhooks-methods] secret, eventPayload & signature required"
+      "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   });
 
   test("verify(secret, eventPayload) without options.signature throws", async () => {
     // @ts-expect-error
     await expect(() => verify(secret, eventPayload)).rejects.toThrow(
-      "[@octokit/webhooks-methods] secret, eventPayload & signature required"
+      "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   });
 
@@ -73,7 +73,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "Foo\n\u001b[34mbar: ♥♥♥♥♥♥♥♥\nthis-is-lost\u001b[0m\u001b[2K",
       }),
-      "sha1=82a91c5aacc9cdc2eea893bc828bd03d218df79c"
+      "sha1=82a91c5aacc9cdc2eea893bc828bd03d218df79c",
     );
     expect(signatureMatchesLowerCaseSequence).toBe(true);
     const signatureMatchesUpperCaseSequence = await verify(
@@ -81,7 +81,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "Foo\n\u001B[34mbar: ♥♥♥♥♥♥♥♥\nthis-is-lost\u001B[0m\u001B[2K",
       }),
-      "sha1=82a91c5aacc9cdc2eea893bc828bd03d218df79c"
+      "sha1=82a91c5aacc9cdc2eea893bc828bd03d218df79c",
     );
     expect(signatureMatchesUpperCaseSequence).toBe(true);
     const signatureMatchesEscapedSequence = await verify(
@@ -89,7 +89,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "\\u001b",
       }),
-      "sha1=bdae4705bdd827d026bb227817ca025b5b3a6756"
+      "sha1=bdae4705bdd827d026bb227817ca025b5b3a6756",
     );
     expect(signatureMatchesEscapedSequence).toBe(true);
   });
@@ -98,7 +98,7 @@ describe("verify", () => {
     const signatureMatches = await verify(
       secret,
       eventPayload,
-      signatureSHA256
+      signatureSHA256,
     );
     expect(signatureMatches).toBe(true);
   });
@@ -120,7 +120,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "Foo\n\u001b[34mbar: ♥♥♥♥♥♥♥♥\nthis-is-lost\u001b[0m\u001b[2K",
       }),
-      "sha256=9dacf9003316b09be07df56d86a2d0d6872e42a1e6c72c3bad9ff915a7c5603e"
+      "sha256=9dacf9003316b09be07df56d86a2d0d6872e42a1e6c72c3bad9ff915a7c5603e",
     );
     expect(signatureMatchesLowerCaseSequence).toBe(true);
     const signatureMatchesUpperCaseSequence = await verify(
@@ -128,7 +128,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "Foo\n\u001B[34mbar: ♥♥♥♥♥♥♥♥\nthis-is-lost\u001B[0m\u001B[2K",
       }),
-      "sha256=9dacf9003316b09be07df56d86a2d0d6872e42a1e6c72c3bad9ff915a7c5603e"
+      "sha256=9dacf9003316b09be07df56d86a2d0d6872e42a1e6c72c3bad9ff915a7c5603e",
     );
     expect(signatureMatchesUpperCaseSequence).toBe(true);
     const signatureMatchesEscapedSequence = await verify(
@@ -136,7 +136,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "\\u001b",
       }),
-      "sha256=87316067e2011fae39998b18c46a14d83b3e7c3ffdd88fb2ee5afb7d11288e60"
+      "sha256=87316067e2011fae39998b18c46a14d83b3e7c3ffdd88fb2ee5afb7d11288e60",
     );
     expect(signatureMatchesEscapedSequence).toBe(true);
   });
@@ -152,7 +152,7 @@ describe("verifyWithFallback", () => {
       secret,
       eventPayload,
       signatureSHA256,
-      ["foo"]
+      ["foo"],
     );
     expect(signatureMatches).toBe(true);
   });
@@ -162,7 +162,7 @@ describe("verifyWithFallback", () => {
       "foo",
       eventPayload,
       signatureSHA256,
-      [secret]
+      [secret],
     );
     expect(signatureMatches).toBe(true);
   });
@@ -172,7 +172,7 @@ describe("verifyWithFallback", () => {
       "foo",
       eventPayload,
       signatureSHA256,
-      ["foo"]
+      ["foo"],
     );
     expect(signatureMatches).toBe(false);
   });

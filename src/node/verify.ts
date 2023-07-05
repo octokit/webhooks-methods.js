@@ -8,11 +8,11 @@ import { getAlgorithm } from "../utils";
 export async function verify(
   secret: string,
   eventPayload: string,
-  signature: string
+  signature: string,
 ): Promise<boolean> {
   if (!secret || !eventPayload || !signature) {
     throw new TypeError(
-      "[@octokit/webhooks-methods] secret, eventPayload & signature required"
+      "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   }
 
@@ -20,7 +20,7 @@ export async function verify(
   const algorithm = getAlgorithm(signature);
 
   const verificationBuffer = Buffer.from(
-    await sign({ secret, algorithm }, eventPayload)
+    await sign({ secret, algorithm }, eventPayload),
   );
 
   if (signatureBuffer.length !== verificationBuffer.length) {
