@@ -4,7 +4,7 @@ import { VERSION } from "../version";
 
 export async function sign(
   options: SignOptions | string,
-  payload: string
+  payload: string,
 ): Promise<string> {
   const { secret, algorithm } =
     typeof options === "object"
@@ -16,13 +16,13 @@ export async function sign(
 
   if (!secret || !payload) {
     throw new TypeError(
-      "[@octokit/webhooks-methods] secret & payload required for sign()"
+      "[@octokit/webhooks-methods] secret & payload required for sign()",
     );
   }
 
   if (!Object.values(Algorithm).includes(algorithm as Algorithm)) {
     throw new TypeError(
-      `[@octokit/webhooks] Algorithm ${algorithm} is not supported. Must be  'sha1' or 'sha256'`
+      `[@octokit/webhooks] Algorithm ${algorithm} is not supported. Must be  'sha1' or 'sha256'`,
     );
   }
 

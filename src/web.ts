@@ -41,7 +41,7 @@ async function importKey(secret: string, algorithm: AlgorithmLike) {
       hash: { name: getHMACHashName(algorithm) },
     },
     false, // export = false
-    ["sign", "verify"] // what this key can do
+    ["sign", "verify"], // what this key can do
   );
 }
 
@@ -56,20 +56,20 @@ export async function sign(options: SignOptions | string, payload: string) {
 
   if (!secret || !payload) {
     throw new TypeError(
-      "[@octokit/webhooks-methods] secret & payload required for sign()"
+      "[@octokit/webhooks-methods] secret & payload required for sign()",
     );
   }
 
   if (!Object.values(Algorithm).includes(algorithm as Algorithm)) {
     throw new TypeError(
-      `[@octokit/webhooks] Algorithm ${algorithm} is not supported. Must be  'sha1' or 'sha256'`
+      `[@octokit/webhooks] Algorithm ${algorithm} is not supported. Must be  'sha1' or 'sha256'`,
     );
   }
 
   const signature = await crypto.subtle.sign(
     "HMAC",
     await importKey(secret, algorithm),
-    enc.encode(payload)
+    enc.encode(payload),
   );
 
   return `${algorithm}=${UInt8ArrayToHex(signature)}`;
@@ -78,11 +78,11 @@ export async function sign(options: SignOptions | string, payload: string) {
 export async function verify(
   secret: string,
   eventPayload: string,
-  signature: string
+  signature: string,
 ) {
   if (!secret || !eventPayload || !signature) {
     throw new TypeError(
-      "[@octokit/webhooks-methods] secret, eventPayload & signature required"
+      "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   }
 
@@ -91,6 +91,6 @@ export async function verify(
     "HMAC",
     await importKey(secret, algorithm),
     hexToUInt8Array(signature.replace(`${algorithm}=`, "")),
-    enc.encode(eventPayload)
+    enc.encode(eventPayload),
   );
 }
