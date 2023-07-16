@@ -14,6 +14,7 @@
 - [Methods](#methods)
   - [`sign()`](#sign)
   - [`verify()`](#verify)
+  - [`verifyWithFallback()`](#verifywithfallback)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -33,14 +34,15 @@ Browsers
 
 🚧 `@octokit/webhooks-methods` is not meant to be used in browsers. The webhook secret is a sensitive credential that must not be exposed to users.
 
-Load `@octokit/webhooks-methods` directly from [cdn.skypack.dev](https://cdn.skypack.dev)
+Load `@octokit/webhooks-methods` directly from [esm.sh](https://esm.sh)
 
 ```html
 <script type="module">
   import {
     sign,
     verify,
-  } from "https://cdn.skypack.dev/@octokit/webhooks-methods";
+    verifyWithFallback,
+  } from "https://esm.sh/@octokit/webhooks-methods";
 </script>
 ```
 
@@ -54,7 +56,11 @@ Node
 Install with `npm install @octokit/core @octokit/webhooks-methods`
 
 ```js
-const { sign, verify } = require("@octokit/webhooks-methods");
+const {
+  sign,
+  verify,
+  verifyWithFallback,
+} = require("@octokit/webhooks-methods");
 ```
 
 </td></tr>
@@ -69,6 +75,9 @@ await sign({ secret: "mysecret", algorithm: "sha1" }, eventPayloadString);
 // resolves with a string like "sha1=d03207e4b030cf234e3447bac4d93add4c6643d8"
 
 await verify("mysecret", eventPayloadString, "sha256=486d27...");
+// resolves with true or false
+
+await verifyWithFallback("mysecret", eventPayloadString, "sha256=486d27...", ["oldsecret", ...]);
 // resolves with true or false
 ```
 
@@ -124,7 +133,7 @@ Learn more at [Validating payloads from GitHub](https://docs.github.com/en/devel
       <strong>Required.</strong>
       Webhook request payload as received from GitHub.<br>
       <br>
-      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload, null, 2) + '\n'</code>
+      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload)</code>
     </td>
   </tr>
 </table>
@@ -163,7 +172,7 @@ await verify(secret, eventPayloadString, signature);
       <strong>Required.</strong>
       Webhook request payload as received from GitHub.<br>
       <br>
-      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload, null, 2) + '\n'</code>
+      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload)</code>
     </td>
   </tr>
   <tr>
@@ -183,6 +192,78 @@ await verify(secret, eventPayloadString, signature);
 </table>
 
 Resolves with `true` or `false`. Throws error if an argument is missing.
+
+### `verifyWithFallback()`
+
+```js
+await verifyWithFallback(
+  secret,
+  eventPayloadString,
+  signature,
+  additionalSecrets,
+);
+```
+
+<table width="100%">
+  <tr>
+    <td>
+      <code>
+        secret
+      </code>
+      <em>(String)</em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Secret as configured in GitHub Settings.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        eventPayloadString
+      </code>
+      <em>
+        (String)
+      </em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Webhook request payload as received from GitHub.<br>
+      <br>
+      If you have only access to an already parsed object, stringify it with <code>JSON.stringify(payload)</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        signature
+      </code>
+      <em>
+        (String)
+      </em>
+    </td>
+    <td>
+      <strong>Required.</strong>
+      Signature string as calculated by <code><a href="../sign">sign()</a></code>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>
+        additionalSecrets
+      </code>
+      <em>
+        (Array of String)
+      </em>
+    </td>
+    <td>
+        If given, each additional secret will be tried in turn.
+    </td>
+  </tr>
+</table>
+
+This is a thin wrapper around [`verify()`](#verify) that is intended to ease callers' support for key rotation.
+Resolves with `true` or `false`. Throws error if a required argument is missing.
 
 ## Contributing
 

@@ -3,19 +3,16 @@ import { Buffer } from "buffer";
 
 import { sign } from "./sign";
 import { VERSION } from "../version";
-
-const getAlgorithm = (signature: string) => {
-  return signature.startsWith("sha256=") ? "sha256" : "sha1";
-};
+import { getAlgorithm } from "../utils";
 
 export async function verify(
   secret: string,
   eventPayload: string,
-  signature: string
+  signature: string,
 ): Promise<boolean> {
   if (!secret || !eventPayload || !signature) {
     throw new TypeError(
-      "[@octokit/webhooks-methods] secret, eventPayload & signature required"
+      "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   }
 
@@ -23,14 +20,14 @@ export async function verify(
   const algorithm = getAlgorithm(signature);
 
   const verificationBuffer = Buffer.from(
-    await sign({ secret, algorithm }, eventPayload)
+    await sign({ secret, algorithm }, eventPayload),
   );
 
   if (signatureBuffer.length !== verificationBuffer.length) {
     return false;
   }
 
-  // constant time comparison to prevent timing attachs
+  // constant time comparison to prevent timing attacks
   // https://stackoverflow.com/a/31096242/206879
   // https://en.wikipedia.org/wiki/Timing_attack
   return timingSafeEqual(signatureBuffer, verificationBuffer);

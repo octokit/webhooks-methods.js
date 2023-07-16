@@ -1,11 +1,12 @@
 name: Test
-on:
+"on":
   push:
     branches:
       - main
   pull_request:
-    types: [opened, synchronize]
-
+    types:
+      - opened
+      - synchronize
 jobs:
   test:
     uses: oscard0m/.github/.github/workflows/test.yml@add-shared-action

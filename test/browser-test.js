@@ -12,7 +12,13 @@ async function runTests() {
   await page.goto("file:///");
 
   await page.addScriptTag({
-    content: script.replace("export { sign, verify };", ""),
+    content: script.replace(
+      `export {
+  sign,
+  verify
+};`,
+      "",
+    ),
   });
 
   const [signature, verified] = await page.evaluate(async function () {
@@ -27,7 +33,7 @@ async function runTests() {
 
   strictEqual(
     signature,
-    "1b2c16b75bd2a870c114153ccda5bcfca63314bc722fa160d690de133ccbb9db"
+    "sha256=1b2c16b75bd2a870c114153ccda5bcfca63314bc722fa160d690de133ccbb9db",
   );
   strictEqual(verified, true);
 
