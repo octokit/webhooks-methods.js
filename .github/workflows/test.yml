@@ -11,4 +11,4 @@ jobs:
   test:
     uses: oscard0m/.github-octokit/.github/workflows/test.yml@add-shared-action
     with:
-      node_versions: '[14,16,18]'
+      node_versions: '[18,20]'
