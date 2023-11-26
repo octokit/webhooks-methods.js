@@ -1,5 +1,5 @@
-import { timingSafeEqual } from "crypto";
-import { Buffer } from "buffer";
+import { timingSafeEqual } from "node:crypto";
+import { Buffer } from "node:buffer";
 
 import { sign } from "./sign";
 import { VERSION } from "../version";

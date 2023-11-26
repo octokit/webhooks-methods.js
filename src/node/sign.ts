@@ -1,4 +1,4 @@
-import { createHmac } from "crypto";
+import { createHmac } from "node:crypto";
 import { Algorithm, type SignOptions } from "../types";
 import { VERSION } from "../version";
 
