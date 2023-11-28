@@ -1,12 +1,11 @@
-import { timingSafeEqual } from "crypto";
+import { createHmac, timingSafeEqual } from "crypto";
 import { Buffer } from "buffer";
 
-import { sign } from "./sign";
 import { VERSION } from "../version";
-import { getAlgorithm } from "../utils";
+import { isValidSignaturePrefix } from "../utils";
 
 export async function verify(
-  secret: string,
+  secret: string | Buffer,
   eventPayload: string,
   signature: string,
 ): Promise<boolean> {
@@ -16,16 +15,18 @@ export async function verify(
     );
   }
 
-  const signatureBuffer = Buffer.from(signature);
-  const algorithm = getAlgorithm(signature);
-
-  const verificationBuffer = Buffer.from(
-    await sign({ secret, algorithm }, eventPayload),
-  );
-
-  if (signatureBuffer.length !== verificationBuffer.length) {
+  if (isValidSignaturePrefix(signature) === false) {
     return false;
   }
+  const signatureBuffer = Buffer.from(signature.slice(7), "hex");
+
+  if (signatureBuffer.length !== 32) {
+    return false;
+  }
+
+  const verificationBuffer = Buffer.from(
+    createHmac("sha256", secret).update(eventPayload).digest(),
+  );
 
   // constant time comparison to prevent timing attacks
   // https://stackoverflow.com/a/31096242/206879

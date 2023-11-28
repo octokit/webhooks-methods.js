@@ -10,8 +10,7 @@ function toNormalizedJsonString(payload: object) {
 
 const eventPayload = toNormalizedJsonString({ foo: "bar" });
 const secret = "mysecret";
-const signatureSHA1 = "sha1=640c0ea7402a3f74e1767338fa2dba243b1f2d9c";
-const signatureSHA256 =
+const signature =
   "sha256=e3eccac34c43c7dc1cbb905488b1b81347fcc700a7b025697a9d07862256023f";
 
 describe("verify", () => {
@@ -51,69 +50,40 @@ describe("verify", () => {
     );
   });
 
-  test("verify(secret, eventPayload, signatureSHA1) returns true for correct signature", async () => {
-    const signatureMatches = await verify(secret, eventPayload, signatureSHA1);
+  test("verify(secret, eventPayload, signature) returns true for correct signature", async () => {
+    const signatureMatches = await verify(secret, eventPayload, signature);
     expect(signatureMatches).toBe(true);
   });
 
-  test("verify(secret, eventPayload, signatureSHA1) returns false for incorrect signature", async () => {
-    const signatureMatches = await verify(secret, eventPayload, "foo");
-    expect(signatureMatches).toBe(false);
+  test("verify(secret, eventPayload, signature) returns true for secret provided as Buffer", async () => {
+    const signatureMatches = await verify(
+      Buffer.from(secret),
+      eventPayload,
+      signature,
+    );
+    expect(signatureMatches).toBe(true);
   });
 
-  test("verify(secret, eventPayload, signatureSHA1) returns false for correct secret", async () => {
-    const signatureMatches = await verify("foo", eventPayload, signatureSHA1);
-    expect(signatureMatches).toBe(false);
-  });
-
-  test("verify(secret, eventPayload, signatureSHA1) returns true if eventPayload contains special characters (#71)", async () => {
-    // https://github.com/octokit/webhooks.js/issues/71
-    const signatureMatchesLowerCaseSequence = await verify(
-      "development",
-      toNormalizedJsonString({
-        foo: "Foo\n\u001b[34mbar: ♥♥♥♥♥♥♥♥\nthis-is-lost\u001b[0m\u001b[2K",
-      }),
-      "sha1=82a91c5aacc9cdc2eea893bc828bd03d218df79c",
-    );
-    expect(signatureMatchesLowerCaseSequence).toBe(true);
-    const signatureMatchesUpperCaseSequence = await verify(
-      "development",
-      toNormalizedJsonString({
-        foo: "Foo\n\u001B[34mbar: ♥♥♥♥♥♥♥♥\nthis-is-lost\u001B[0m\u001B[2K",
-      }),
-      "sha1=82a91c5aacc9cdc2eea893bc828bd03d218df79c",
-    );
-    expect(signatureMatchesUpperCaseSequence).toBe(true);
-    const signatureMatchesEscapedSequence = await verify(
-      "development",
-      toNormalizedJsonString({
-        foo: "\\u001b",
-      }),
-      "sha1=bdae4705bdd827d026bb227817ca025b5b3a6756",
-    );
-    expect(signatureMatchesEscapedSequence).toBe(true);
-  });
-
-  test("verify(secret, eventPayload, signatureSHA256) returns true for correct signature", async () => {
+  test("verify(secret, eventPayload, signature) returns false for incorrect signature", async () => {
     const signatureMatches = await verify(
       secret,
       eventPayload,
-      signatureSHA256,
+      "sha256=xxxccac34c43c7dc1cbb905488b1b81347fcc700a7b025697a9d07862256023f",
     );
-    expect(signatureMatches).toBe(true);
+    expect(signatureMatches).toBe(false);
   });
 
-  test("verify(secret, eventPayload, signatureSHA256) returns false for incorrect signature", async () => {
+  test("verify(secret, eventPayload, signature) returns false for incorrect signature", async () => {
     const signatureMatches = await verify(secret, eventPayload, "foo");
     expect(signatureMatches).toBe(false);
   });
 
-  test("verify(secret, eventPayload, signatureSHA256) returns false for incorrect secret", async () => {
-    const signatureMatches = await verify("foo", eventPayload, signatureSHA256);
+  test("verify(secret, eventPayload, signature) returns false for incorrect secret", async () => {
+    const signatureMatches = await verify("foo", eventPayload, signature);
     expect(signatureMatches).toBe(false);
   });
 
-  test("verify(secret, eventPayload, signatureSHA256) returns true if eventPayload contains special characters (#71)", async () => {
+  test("verify(secret, eventPayload, signature) returns true if eventPayload contains special characters (#71)", async () => {
     // https://github.com/octokit/webhooks.js/issues/71
     const signatureMatchesLowerCaseSequence = await verify(
       "development",
@@ -147,31 +117,31 @@ describe("verifyWithFallback", () => {
     expect(verifyWithFallback).toBeInstanceOf(Function);
   });
 
-  test("verifyWithFallback(secret, eventPayload, signatureSHA256, [bogus]) returns true", async () => {
+  test("verifyWithFallback(secret, eventPayload, signature, [bogus]) returns true", async () => {
     const signatureMatches = await verifyWithFallback(
       secret,
       eventPayload,
-      signatureSHA256,
+      signature,
       ["foo"],
     );
     expect(signatureMatches).toBe(true);
   });
 
-  test("verifyWithFallback(bogus, eventPayload, signatureSHA256, [secret]) returns true", async () => {
+  test("verifyWithFallback(bogus, eventPayload, signature, [secret]) returns true", async () => {
     const signatureMatches = await verifyWithFallback(
       "foo",
       eventPayload,
-      signatureSHA256,
+      signature,
       [secret],
     );
     expect(signatureMatches).toBe(true);
   });
 
-  test("verify(bogus, eventPayload, signatureSHA256, [bogus]) returns false", async () => {
+  test("verify(bogus, eventPayload, signature, [bogus]) returns false", async () => {
     const signatureMatches = await verifyWithFallback(
       "foo",
       eventPayload,
-      signatureSHA256,
+      signature,
       ["foo"],
     );
     expect(signatureMatches).toBe(false);
