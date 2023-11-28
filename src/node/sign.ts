@@ -1,6 +1,6 @@
 import { createHmac } from "node:crypto";
-import { Algorithm, type SignOptions } from "../types";
-import { VERSION } from "../version";
+import { Algorithm, type SignOptions } from "../types.js";
+import { VERSION } from "../version.js";
 
 export async function sign(
   options: SignOptions | string,

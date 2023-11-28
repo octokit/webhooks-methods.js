@@ -1,4 +1,4 @@
-import { sign } from "../src";
+import { sign } from "../src/index.ts";
 
 const eventPayload = {
   foo: "bar",

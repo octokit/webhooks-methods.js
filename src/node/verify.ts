@@ -1,9 +1,9 @@
 import { timingSafeEqual } from "node:crypto";
 import { Buffer } from "node:buffer";
 
-import { sign } from "./sign";
-import { VERSION } from "../version";
-import { getAlgorithm } from "../utils";
+import { sign } from "./sign.js";
+import { VERSION } from "../version.js";
+import { getAlgorithm } from "../utils.js";
 
 export async function verify(
   secret: string,
