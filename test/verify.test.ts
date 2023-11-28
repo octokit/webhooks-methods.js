@@ -1,4 +1,4 @@
-import { verify, verifyWithFallback } from "../src";
+import { verify, verifyWithFallback } from "../src/index.ts";
 
 function toNormalizedJsonString(payload: object) {
   // GitHub sends its JSON with an indentation of 2 spaces and a line break at the end

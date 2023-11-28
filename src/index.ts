@@ -1,5 +1,5 @@
-export { sign } from "./node/sign";
-import { verify } from "./node/verify";
+export { sign } from "./node/sign.js";
+import { verify } from "./node/verify.js";
 export { verify };
 
 export async function verifyWithFallback(

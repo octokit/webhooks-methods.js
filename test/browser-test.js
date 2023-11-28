@@ -1,6 +1,6 @@
-const { strictEqual } = require("assert");
+const { strictEqual } = require("node:assert");
 
-const { readFile } = require("fs").promises;
+const { readFile } = require("node:fs/promises");
 const puppeteer = require("puppeteer");
 
 runTests();

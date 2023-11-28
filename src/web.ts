@@ -1,5 +1,5 @@
-import { Algorithm, type AlgorithmLike, type SignOptions } from "./types";
-import { getAlgorithm } from "./utils";
+import { Algorithm, type AlgorithmLike, type SignOptions } from "./types.js";
+import { getAlgorithm } from "./utils.js";
 
 const enc = new TextEncoder();
 
