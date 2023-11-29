@@ -1,8 +1,8 @@
-import { createHmac, timingSafeEqual } from "crypto";
-import { Buffer } from "buffer";
+import { createHmac, timingSafeEqual } from "node:crypto";
+import { Buffer } from "node:buffer";
 
-import { VERSION } from "../version";
-import { isValidSignaturePrefix } from "../utils";
+import { VERSION } from "../version.js";
+import { isValidSignaturePrefix } from "../utils.js";
 
 export async function verify(
   secret: string | Buffer,

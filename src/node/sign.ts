@@ -1,5 +1,5 @@
-import { createHmac } from "crypto";
-import { VERSION } from "../version";
+import { createHmac } from "node:crypto";
+import { VERSION } from "../version.js";
 
 export async function sign(
   secret: string | Buffer,

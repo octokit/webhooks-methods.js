@@ -1,4 +1,4 @@
-import { sign, signSync } from "../src";
+import { sign, signSync } from "../src/index.ts";
 
 const eventPayload = {
   foo: "bar",

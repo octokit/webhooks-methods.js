@@ -60,7 +60,11 @@
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/test/deno/"
-    ]
+    ],
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^(.+)\\.jsx?$": "$1"
+    }
   },
   "release": {
     "branches": [

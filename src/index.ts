@@ -1,6 +1,6 @@
-export { sign, signSync } from "./node/sign";
-import { verifySync } from "./node/verify";
-export { verify, verifySync } from "./node/verify";
+export { sign, signSync } from "./node/sign.js";
+import { verifySync } from "./node/verify.js";
+export { verify, verifySync } from "./node/verify.js";
 
 export async function verifyWithFallback(
   secret: string,
