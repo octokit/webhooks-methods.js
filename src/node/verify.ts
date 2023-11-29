@@ -6,7 +6,7 @@ import { isValidSignaturePrefix } from "../utils.js";
 
 export async function verify(
   secret: string | Buffer,
-  eventPayload: string,
+  eventPayload: string | Buffer,
   signature: string,
 ): Promise<boolean> {
   return verifySync(secret, eventPayload, signature);
@@ -14,7 +14,7 @@ export async function verify(
 
 export function verifySync(
   secret: string | Buffer,
-  eventPayload: string,
+  eventPayload: string | Buffer,
   signature: string,
 ): boolean {
   if (!secret || !eventPayload || !signature) {

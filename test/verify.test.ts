@@ -64,6 +64,24 @@ describe("verify", () => {
     expect(signatureMatches).toBe(true);
   });
 
+  test("verify(secret, eventPayload, signature) returns true for payload provided as Buffer", async () => {
+    const signatureMatches = await verify(
+      secret,
+      Buffer.from(eventPayload),
+      signature,
+    );
+    expect(signatureMatches).toBe(true);
+  });
+
+  test("verify(secret, eventPayload, signature) returns true for payload and secret provided as Buffer", async () => {
+    const signatureMatches = await verify(
+      Buffer.from(secret),
+      Buffer.from(eventPayload),
+      signature,
+    );
+    expect(signatureMatches).toBe(true);
+  });
+
   test("verify(secret, eventPayload, signature) returns false for incorrect signature", async () => {
     const signatureMatches = await verify(
       secret,

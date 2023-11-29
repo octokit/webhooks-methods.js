@@ -59,6 +59,34 @@ describe("sign", () => {
       });
     });
   });
+
+  describe("with eventPayload as Buffer", () => {
+    describe("returns expected sha256 signature", () => {
+      test("sign(secret, eventPayload)", async () => {
+        const signature = await sign(
+          secret,
+          Buffer.from(JSON.stringify(eventPayload)),
+        );
+        expect(signature).toBe(
+          "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
+        );
+      });
+    });
+  });
+
+  describe("with eventPayload and secret as Buffer", () => {
+    describe("returns expected sha256 signature", () => {
+      test("sign(secret, eventPayload)", async () => {
+        const signature = await sign(
+          Buffer.from(secret),
+          Buffer.from(JSON.stringify(eventPayload)),
+        );
+        expect(signature).toBe(
+          "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
+        );
+      });
+    });
+  });
 });
 
 describe("signSync", () => {

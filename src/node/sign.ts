@@ -3,12 +3,15 @@ import { VERSION } from "../version.js";
 
 export async function sign(
   secret: string | Buffer,
-  payload: string,
+  payload: string | Buffer,
 ): Promise<string> {
   return signSync(secret, payload);
 }
 
-export function signSync(secret: string | Buffer, payload: string): string {
+export function signSync(
+  secret: string | Buffer,
+  payload: string | Buffer,
+): string {
   if (!secret || !payload) {
     throw new TypeError(
       "[@octokit/webhooks-methods] secret & payload required for sign()",
