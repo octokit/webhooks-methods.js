@@ -1,4 +1,4 @@
-import { sign } from "../src";
+import { sign, signSync } from "../src";
 
 const eventPayload = {
   foo: "bar",
@@ -58,5 +58,22 @@ describe("sign", () => {
         );
       });
     });
+  });
+});
+
+describe("signSync", () => {
+  it("is a function", () => {
+    expect(signSync).toBeInstanceOf(Function);
+  });
+
+  it("signSync.VERSION is set", () => {
+    expect(signSync.VERSION).toEqual("0.0.0-development");
+  });
+
+  test("signSync(secret, eventPayload)", () => {
+    const signature = signSync(secret, JSON.stringify(eventPayload));
+    expect(signature).toBe(
+      "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
+    );
   });
 });

@@ -1,4 +1,4 @@
-import { verify, verifyWithFallback } from "../src";
+import { verify, verifySync, verifyWithFallback } from "../src";
 
 function toNormalizedJsonString(payload: object) {
   // GitHub sends its JSON with an indentation of 2 spaces and a line break at the end
@@ -145,5 +145,20 @@ describe("verifyWithFallback", () => {
       ["foo"],
     );
     expect(signatureMatches).toBe(false);
+  });
+});
+
+describe("verifySync", () => {
+  it("is a function", () => {
+    expect(verifySync).toBeInstanceOf(Function);
+  });
+
+  it("verifySync.VERSION is set", () => {
+    expect(verifySync.VERSION).toEqual("0.0.0-development");
+  });
+
+  test("verifySync(secret, eventPayload, signature) returns true for correct signature", () => {
+    const signatureMatches = verifySync(secret, eventPayload, signature);
+    expect(signatureMatches).toBe(true);
   });
 });

@@ -9,6 +9,14 @@ export async function verify(
   eventPayload: string,
   signature: string,
 ): Promise<boolean> {
+  return verifySync(secret, eventPayload, signature);
+}
+
+export function verifySync(
+  secret: string | Buffer,
+  eventPayload: string,
+  signature: string,
+): boolean {
   if (!secret || !eventPayload || !signature) {
     throw new TypeError(
       "[@octokit/webhooks-methods] secret, eventPayload & signature required",
@@ -24,9 +32,9 @@ export async function verify(
     return false;
   }
 
-  const verificationBuffer = Buffer.from(
-    createHmac("sha256", secret).update(eventPayload).digest(),
-  );
+  const verificationBuffer = createHmac("sha256", secret)
+    .update(eventPayload)
+    .digest().buffer as Buffer;
 
   // constant time comparison to prevent timing attacks
   // https://stackoverflow.com/a/31096242/206879
@@ -35,3 +43,4 @@ export async function verify(
 }
 
 verify.VERSION = VERSION;
+verifySync.VERSION = VERSION;

@@ -1,5 +1,3 @@
-import { type SignOptions } from "./types";
-
 const enc = new TextEncoder();
 
 function hexToUInt8Array(string: string) {
@@ -35,15 +33,7 @@ async function importKey(secret: string) {
   );
 }
 
-export async function sign(options: SignOptions | string, payload: string) {
-  const { secret, algorithm } =
-    typeof options === "object"
-      ? {
-          secret: options.secret,
-          algorithm: "sha256",
-        }
-      : { secret: options, algorithm: "sha256" };
-
+export async function sign(secret: string, payload: string) {
   if (!secret || !payload) {
     throw new TypeError(
       "[@octokit/webhooks-methods] secret & payload required for sign()",
@@ -56,7 +46,7 @@ export async function sign(options: SignOptions | string, payload: string) {
     enc.encode(payload),
   );
 
-  return `${algorithm}=${UInt8ArrayToHex(signature)}`;
+  return `sha256=${UInt8ArrayToHex(signature)}`;
 }
 
 export async function verify(

@@ -5,6 +5,10 @@ export async function sign(
   secret: string | Buffer,
   payload: string,
 ): Promise<string> {
+  return signSync(secret, payload);
+}
+
+export function signSync(secret: string | Buffer, payload: string): string {
   if (!secret || !payload) {
     throw new TypeError(
       "[@octokit/webhooks-methods] secret & payload required for sign()",
@@ -15,3 +19,4 @@ export async function sign(
 }
 
 sign.VERSION = VERSION;
+signSync.VERSION = VERSION;
