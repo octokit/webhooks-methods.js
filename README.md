@@ -71,9 +71,6 @@ const {
 await sign("mysecret", eventPayloadString);
 // resolves with a string like "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3"
 
-await sign({ secret: "mysecret", algorithm: "sha1" }, eventPayloadString);
-// resolves with a string like "sha1=d03207e4b030cf234e3447bac4d93add4c6643d8"
-
 await verify("mysecret", eventPayloadString, "sha256=486d27...");
 // resolves with true or false
 
@@ -87,7 +84,6 @@ await verifyWithFallback("mysecret", eventPayloadString, "sha256=486d27...", ["o
 
 ```js
 await sign(secret, eventPayloadString);
-await sign({ secret, algorithm }, eventPayloadString);
 ```
 
 <table width="100%">
@@ -102,23 +98,6 @@ await sign({ secret, algorithm }, eventPayloadString);
       <strong>Required.</strong>
       Secret as configured in GitHub Settings.
     </td>
-  </tr>
-  <tr>
-    <td>
-      <code>
-        algorithm
-      </code>
-      <em>
-        (String)
-      </em>
-    </td>
-    <td>
-
-Algorithm to calculate signature. Can be set to `sha1` or `sha256`. `sha1` is supported for legacy reasons. GitHub Enterprise Server 2.22 and older do not send the `X-Hub-Signature-256` header. Defaults to `sha256`.
-
-Learn more at [Validating payloads from GitHub](https://docs.github.com/en/developers/webhooks-and-events/securing-your-webhooks#validating-payloads-from-github)
-
-</td>
   </tr>
   <tr>
     <td>

@@ -1,31 +1,40 @@
-import { timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { Buffer } from "node:buffer";
 
-import { sign } from "./sign.js";
 import { VERSION } from "../version.js";
-import { getAlgorithm } from "../utils.js";
+import { isValidSignaturePrefix } from "../utils.js";
 
 export async function verify(
-  secret: string,
-  eventPayload: string,
+  secret: string | Buffer,
+  eventPayload: string | Buffer,
   signature: string,
 ): Promise<boolean> {
+  return verifySync(secret, eventPayload, signature);
+}
+
+export function verifySync(
+  secret: string | Buffer,
+  eventPayload: string | Buffer,
+  signature: string,
+): boolean {
   if (!secret || !eventPayload || !signature) {
     throw new TypeError(
       "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   }
 
-  const signatureBuffer = Buffer.from(signature);
-  const algorithm = getAlgorithm(signature);
-
-  const verificationBuffer = Buffer.from(
-    await sign({ secret, algorithm }, eventPayload),
-  );
-
-  if (signatureBuffer.length !== verificationBuffer.length) {
+  if (isValidSignaturePrefix(signature) === false) {
     return false;
   }
+  const signatureBuffer = Buffer.from(signature.slice(7), "hex");
+
+  if (signatureBuffer.length !== 32) {
+    return false;
+  }
+
+  const verificationBuffer = createHmac("sha256", secret)
+    .update(eventPayload)
+    .digest().buffer as Buffer;
 
   // constant time comparison to prevent timing attacks
   // https://stackoverflow.com/a/31096242/206879
@@ -34,3 +43,4 @@ export async function verify(
 }
 
 verify.VERSION = VERSION;
+verifySync.VERSION = VERSION;

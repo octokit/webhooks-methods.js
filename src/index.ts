@@ -1,14 +1,23 @@
-export { sign } from "./node/sign.js";
-import { verify } from "./node/verify.js";
-export { verify };
+export { sign, signSync } from "./node/sign.js";
+import { verifySync } from "./node/verify.js";
+export { verify, verifySync } from "./node/verify.js";
 
 export async function verifyWithFallback(
   secret: string,
   payload: string,
   signature: string,
   additionalSecrets: undefined | string[],
-): Promise<any> {
-  const firstPass = await verify(secret, payload, signature);
+): Promise<boolean> {
+  return verifyWithFallbackSync(secret, payload, signature, additionalSecrets);
+}
+
+export function verifyWithFallbackSync(
+  secret: string,
+  payload: string,
+  signature: string,
+  additionalSecrets: undefined | string[],
+): boolean {
+  const firstPass = verifySync(secret, payload, signature);
 
   if (firstPass) {
     return true;
@@ -16,7 +25,7 @@ export async function verifyWithFallback(
 
   if (additionalSecrets !== undefined) {
     for (const s of additionalSecrets) {
-      const v: boolean = await verify(s, payload, signature);
+      const v: boolean = verifySync(s, payload, signature);
       if (v) {
         return v;
       }
