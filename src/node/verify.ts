@@ -16,6 +16,12 @@ export async function verify(
     );
   }
 
+  if (typeof eventPayload !== "string") {
+    throw new TypeError(
+      "[@octokit/webhooks-methods] eventPayload must be a string",
+    );
+  }
+
   const signatureBuffer = Buffer.from(signature);
   const algorithm = getAlgorithm(signature);
 

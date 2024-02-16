@@ -60,6 +60,10 @@ export async function sign(options: SignOptions | string, payload: string) {
     );
   }
 
+  if (typeof payload !== "string") {
+    throw new TypeError("[@octokit/webhooks-methods] payload must be a string");
+  }
+
   if (!Object.values(Algorithm).includes(algorithm as Algorithm)) {
     throw new TypeError(
       `[@octokit/webhooks] Algorithm ${algorithm} is not supported. Must be  'sha1' or 'sha256'`,
@@ -83,6 +87,12 @@ export async function verify(
   if (!secret || !eventPayload || !signature) {
     throw new TypeError(
       "[@octokit/webhooks-methods] secret, eventPayload & signature required",
+    );
+  }
+
+  if (typeof eventPayload !== "string") {
+    throw new TypeError(
+      "[@octokit/webhooks-methods] eventPayload must be a string",
     );
   }
 

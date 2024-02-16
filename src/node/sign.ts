@@ -20,6 +20,10 @@ export async function sign(
     );
   }
 
+  if (typeof payload !== "string") {
+    throw new TypeError("[@octokit/webhooks-methods] payload must be a string");
+  }
+
   if (!Object.values(Algorithm).includes(algorithm as Algorithm)) {
     throw new TypeError(
       `[@octokit/webhooks] Algorithm ${algorithm} is not supported. Must be  'sha1' or 'sha256'`,
