@@ -38,7 +38,7 @@ describe("sign", () => {
   test("sign({secret, algorithm}) throws with invalid algorithm", async () => {
     await expect(() =>
       // @ts-expect-error
-      sign({ secret, algorithm: "sha2" }, eventPayload),
+      sign({ secret, algorithm: "sha2" }, JSON.stringify(eventPayload)),
     ).rejects.toThrow(
       "[@octokit/webhooks] Algorithm sha2 is not supported. Must be  'sha1' or 'sha256'",
     );
@@ -80,5 +80,12 @@ describe("sign", () => {
         );
       });
     });
+  });
+
+  test("throws with eventPayload as object", () => {
+    // @ts-expect-error
+    expect(() => sign(secret, eventPayload)).rejects.toThrow(
+      "[@octokit/webhooks-methods] payload must be a string",
+    );
   });
 });
