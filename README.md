@@ -56,11 +56,7 @@ Node
 Install with `npm install @octokit/core @octokit/webhooks-methods`
 
 ```js
-import {
-  sign,
-  verify,
-  verifyWithFallback,
-} from "@octokit/webhooks-methods";
+import { sign, verify, verifyWithFallback } from "@octokit/webhooks-methods";
 ```
 
 </td></tr>
