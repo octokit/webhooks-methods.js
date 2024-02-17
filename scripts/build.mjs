@@ -72,8 +72,8 @@ async function main() {
             browser: {
               import: "./dist-web/index.js",
               types: "./dist-types/web.d.ts",
-            }
-          }
+            },
+          },
         },
         sideEffects: false,
       },
