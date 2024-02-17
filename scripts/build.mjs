@@ -56,6 +56,7 @@ async function main() {
   delete pkg.scripts;
   delete pkg.prettier;
   delete pkg.release;
+  delete pkg.jest;
   await writeFile(
     "pkg/package.json",
     JSON.stringify(
@@ -63,14 +64,16 @@ async function main() {
         ...pkg,
         files: ["dist-*/**"],
         exports: {
-          node: {
-            import: "./dist-node/index.js",
-            types: "./dist-types/index.d.ts",
-          },
-          browser: {
-            import: "./dist-web/index.js",
-            types: "./dist-types/web.d.ts",
-          },
+          ".": {
+            node: {
+              import: "./dist-node/index.js",
+              types: "./dist-types/index.d.ts",
+            },
+            browser: {
+              import: "./dist-web/index.js",
+              types: "./dist-types/web.d.ts",
+            }
+          }
         },
         sideEffects: false,
       },
