@@ -32,7 +32,7 @@ async function main() {
       bundle: true,
       platform: "node",
       target: "node18",
-      format: "cjs",
+      format: "esm",
       ...sharedOptions,
     }),
     // Build an ESM browser bundle
@@ -62,10 +62,16 @@ async function main() {
       {
         ...pkg,
         files: ["dist-*/**"],
-        main: "dist-node/index.js",
-        browser: "dist-web/index.js",
-        types: "dist-types/index.d.ts",
-        module: "dist-src/index.js",
+        exports: {
+          node: {
+            import: "./dist-node/index.js",
+            types: "./dist-types/index.d.ts",
+          },
+          browser: {
+            import: "./dist-web/index.js",
+            types: "./dist-types/web.d.ts",
+          },
+        },
         sideEffects: false,
       },
       null,
