@@ -1,7 +1,7 @@
-const { strictEqual } = require("node:assert");
+import { strictEqual } from "node:assert";
 
-const { readFile } = require("node:fs/promises");
-const puppeteer = require("puppeteer");
+import { readFile } from "node:fs/promises";
+import puppeteer from "puppeteer";
 
 runTests();
 
