@@ -66,12 +66,12 @@ async function main() {
         exports: {
           ".": {
             node: {
-              import: "./dist-node/index.js",
               types: "./dist-types/index.d.ts",
+              import: "./dist-node/index.js",
             },
             browser: {
-              import: "./dist-web/index.js",
               types: "./dist-types/web.d.ts",
+              import: "./dist-web/index.js",
             },
           },
         },
