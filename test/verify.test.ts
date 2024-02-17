@@ -8,7 +8,8 @@ function toNormalizedJsonString(payload: object) {
   });
 }
 
-const eventPayload = toNormalizedJsonString({ foo: "bar" });
+const JSONeventPayload = { foo: "bar" };
+const eventPayload = toNormalizedJsonString(JSONeventPayload);
 const secret = "mysecret";
 const signatureSHA1 = "sha1=640c0ea7402a3f74e1767338fa2dba243b1f2d9c";
 const signatureSHA256 =
@@ -139,6 +140,15 @@ describe("verify", () => {
       "sha256=87316067e2011fae39998b18c46a14d83b3e7c3ffdd88fb2ee5afb7d11288e60",
     );
     expect(signatureMatchesEscapedSequence).toBe(true);
+  });
+
+  test("verify(secret, eventPayload, signatureSHA256) with JSON eventPayload", async () => {
+    await expect(() =>
+      // @ts-expect-error
+      verify(secret, JSONeventPayload, signatureSHA256),
+    ).rejects.toThrow(
+      "[@octokit/webhooks-methods] eventPayload must be a string",
+    );
   });
 });
 
