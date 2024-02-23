@@ -26,7 +26,7 @@ async function importKey(secret: string) {
     {
       // algorithm details
       name: "HMAC",
-      hash: { name: "sha256" },
+      hash: { name: "SHA256" },
     },
     false, // export = false
     ["sign", "verify"], // what this key can do
@@ -44,7 +44,7 @@ export async function sign(secret: string, payload: string): Promise<string> {
     throw new TypeError("[@octokit/webhooks-methods] payload must be a string");
   }
 
-  const algorithm = "sha256";
+  const algorithm = "SHA256";
   const signature = await crypto.subtle.sign(
     "HMAC",
     await importKey(secret),
@@ -71,7 +71,7 @@ export async function verify(
     );
   }
 
-  const algorithm = "sha256";
+  const algorithm = "SHA256";
   return await crypto.subtle.verify(
     "HMAC",
     await importKey(secret),
