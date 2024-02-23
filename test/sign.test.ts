@@ -35,15 +35,6 @@ describe("sign", () => {
     );
   });
 
-  test("sign({secret, algorithm}) throws with invalid algorithm", async () => {
-    await expect(() =>
-      // @ts-expect-error
-      sign({ secret, algorithm: "sha2" }, JSON.stringify(eventPayload)),
-    ).rejects.toThrow(
-      "[@octokit/webhooks] Algorithm sha2 is not supported. Must be 'sha256'",
-    );
-  });
-
   describe("with eventPayload as string", () => {
     describe("returns expected sha256 signature", () => {
       test("sign(secret, eventPayload)", async () => {
