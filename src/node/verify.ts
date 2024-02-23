@@ -3,7 +3,6 @@ import { Buffer } from "node:buffer";
 
 import { sign } from "./sign.js";
 import { VERSION } from "../version.js";
-import { getAlgorithm } from "../utils.js";
 
 export async function verify(
   secret: string,
@@ -23,11 +22,8 @@ export async function verify(
   }
 
   const signatureBuffer = Buffer.from(signature);
-  const algorithm = getAlgorithm(signature);
 
-  const verificationBuffer = Buffer.from(
-    await sign({ secret, algorithm }, eventPayload),
-  );
+  const verificationBuffer = Buffer.from(await sign(secret, eventPayload));
 
   if (signatureBuffer.length !== verificationBuffer.length) {
     return false;
