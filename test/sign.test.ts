@@ -45,28 +45,9 @@ describe("sign", () => {
   });
 
   describe("with eventPayload as string", () => {
-    describe("returns expected sha1 signature", () => {
+    describe("returns expected sha256 signature", () => {
       test("sign(secret, eventPayload)", async () => {
         const signature = await sign(secret, JSON.stringify(eventPayload));
-        expect(signature).toBe(
-          "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
-        );
-      });
-
-      test("sign({secret}, eventPayload)", async () => {
-        const signature = await sign({ secret }, JSON.stringify(eventPayload));
-        expect(signature).toBe(
-          "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
-        );
-      });
-    });
-
-    describe("returns expected sha256 signature", () => {
-      test("sign({secret, algorithm: 'sha256'}, eventPayload)", async () => {
-        const signature = await sign(
-          { secret, algorithm: "sha256" },
-          JSON.stringify(eventPayload),
-        );
         expect(signature).toBe(
           "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
         );

@@ -22,11 +22,8 @@ export async function verify(
   }
 
   const signatureBuffer = Buffer.from(signature);
-  const algorithm = "sha256";
 
-  const verificationBuffer = Buffer.from(
-    await sign({ secret, algorithm }, eventPayload),
-  );
+  const verificationBuffer = Buffer.from(await sign(secret, eventPayload));
 
   if (signatureBuffer.length !== verificationBuffer.length) {
     return false;
