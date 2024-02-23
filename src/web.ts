@@ -46,7 +46,10 @@ async function importKey(secret: string, algorithm: AlgorithmLike) {
 }
 
 export async function sign(secret: string, payload: string): Promise<string>;
-export async function sign(options: SignOptions, payload: string): Promise<string>;
+export async function sign(
+  options: SignOptions,
+  payload: string,
+): Promise<string>;
 export async function sign(options: SignOptions | string, payload: string) {
   const { secret, algorithm } =
     typeof options === "object"

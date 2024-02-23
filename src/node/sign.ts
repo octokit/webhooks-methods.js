@@ -3,7 +3,10 @@ import { Algorithm, type SignOptions } from "../types.js";
 import { VERSION } from "../version.js";
 
 export async function sign(secret: string, payload: string): Promise<string>;
-export async function sign(options: SignOptions, payload: string): Promise<string>;
+export async function sign(
+  options: SignOptions,
+  payload: string,
+): Promise<string>;
 export async function sign(
   options: SignOptions | string,
   payload: string,
