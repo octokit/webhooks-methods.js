@@ -26,7 +26,7 @@ async function importKey(secret: string) {
     {
       // algorithm details
       name: "HMAC",
-      hash: { name: "sha256" },
+      hash: { name: "SHA-256" },
     },
     false, // export = false
     ["sign", "verify"], // what this key can do
