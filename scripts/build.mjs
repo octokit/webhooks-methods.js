@@ -73,6 +73,10 @@ async function main() {
               types: "./dist-types/web.d.ts",
               import: "./dist-web/index.js",
             },
+            default: {
+              types: "./dist-types/index.d.ts",
+              import: "./dist-node/index.js",
+            },
           },
         },
         sideEffects: false,
