@@ -1,5 +1,4 @@
 import { Algorithm, type AlgorithmLike, type SignOptions } from "./types.js";
-import { getAlgorithm } from "./utils.js";
 
 const enc = new TextEncoder();
 
@@ -24,7 +23,6 @@ function UInt8ArrayToHex(signature: ArrayBuffer) {
 function getHMACHashName(algorithm: AlgorithmLike) {
   return (
     {
-      [Algorithm.SHA1]: "SHA-1",
       [Algorithm.SHA256]: "SHA-256",
     } as { [key in Algorithm]: string }
   )[algorithm];
@@ -71,7 +69,7 @@ export async function sign(options: SignOptions | string, payload: string) {
 
   if (!Object.values(Algorithm).includes(algorithm as Algorithm)) {
     throw new TypeError(
-      `[@octokit/webhooks] Algorithm ${algorithm} is not supported. Must be  'sha1' or 'sha256'`,
+      `[@octokit/webhooks] Algorithm ${algorithm} is not supported. Must be 'sha256'`,
     );
   }
 
@@ -101,7 +99,7 @@ export async function verify(
     );
   }
 
-  const algorithm = getAlgorithm(signature);
+  const algorithm = "sha256";
   return await crypto.subtle.verify(
     "HMAC",
     await importKey(secret, algorithm),

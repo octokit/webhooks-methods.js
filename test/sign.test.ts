@@ -40,7 +40,7 @@ describe("sign", () => {
       // @ts-expect-error
       sign({ secret, algorithm: "sha2" }, JSON.stringify(eventPayload)),
     ).rejects.toThrow(
-      "[@octokit/webhooks] Algorithm sha2 is not supported. Must be  'sha1' or 'sha256'",
+      "[@octokit/webhooks] Algorithm sha2 is not supported. Must be 'sha256'",
     );
   });
 
@@ -58,14 +58,6 @@ describe("sign", () => {
         expect(signature).toBe(
           "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
         );
-      });
-
-      test("sign({secret, algorithm: 'sha1'}, eventPayload)", async () => {
-        const signature = await sign(
-          { secret, algorithm: "sha1" },
-          JSON.stringify(eventPayload),
-        );
-        expect(signature).toBe("sha1=d03207e4b030cf234e3447bac4d93add4c6643d8");
       });
     });
 
