@@ -1,6 +1,6 @@
 import { sign, verify } from "../../pkg/dist-web/index.js";
 
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert";
 
 Deno.test("sign", async () => {
   const actual = await sign("secret", "data");
