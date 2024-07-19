@@ -6,7 +6,7 @@ const JSONeventPayload = { foo: "bar" };
 const eventPayload = toNormalizedJsonString(JSONeventPayload);
 const secret = "mysecret";
 const signatureSHA256 =
-  "sha256=e3eccac34c43c7dc1cbb905488b1b81347fcc700a7b025697a9d07862256023f";
+  "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3";
 
 describe("verify", () => {
   it("is a function", () => {
@@ -71,7 +71,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "Foo\n\u001b[34mbar: ♥♥♥♥♥♥♥♥\nthis-is-lost\u001b[0m\u001b[2K",
       }),
-      "sha256=9dacf9003316b09be07df56d86a2d0d6872e42a1e6c72c3bad9ff915a7c5603e",
+      "sha256=afecc3caa27548bb90d51a50384cb2868b9a3327b4ad6a01c9bd4ed0f8b0b12c",
     );
     expect(signatureMatchesLowerCaseSequence).toBe(true);
     const signatureMatchesUpperCaseSequence = await verify(
@@ -79,7 +79,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "Foo\n\u001B[34mbar: ♥♥♥♥♥♥♥♥\nthis-is-lost\u001B[0m\u001B[2K",
       }),
-      "sha256=9dacf9003316b09be07df56d86a2d0d6872e42a1e6c72c3bad9ff915a7c5603e",
+      "sha256=afecc3caa27548bb90d51a50384cb2868b9a3327b4ad6a01c9bd4ed0f8b0b12c",
     );
     expect(signatureMatchesUpperCaseSequence).toBe(true);
     const signatureMatchesEscapedSequence = await verify(
@@ -87,7 +87,7 @@ describe("verify", () => {
       toNormalizedJsonString({
         foo: "\\u001b",
       }),
-      "sha256=87316067e2011fae39998b18c46a14d83b3e7c3ffdd88fb2ee5afb7d11288e60",
+      "sha256=6f8326efbacfbd04e870cea25b5652e635be8c9807f2fd5348ef60753c9e96ed",
     );
     expect(signatureMatchesEscapedSequence).toBe(true);
   });
