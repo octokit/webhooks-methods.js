@@ -1,6 +1,5 @@
 import esbuild from "esbuild";
 import { copyFile, readFile, writeFile, rm } from "node:fs/promises";
-import { glob } from "glob";
 
 const sharedOptions = {
   sourcemap: "external",
@@ -15,7 +14,7 @@ async function main() {
   await rm("pkg", { recursive: true, force: true });
   // Build the source code for a neutral platform as ESM
   await esbuild.build({
-    entryPoints: await glob(["./src/*.ts", "./src/**/*.ts"]),
+    entryPoints: ["./src/*.ts", "./src/**/*.ts"],
     outdir: "pkg/dist-src",
     bundle: false,
     platform: "neutral",
