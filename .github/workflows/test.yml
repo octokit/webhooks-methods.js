@@ -29,6 +29,7 @@ jobs:
         with:
           deno-version: v1.x
       - run: npm ci
+      - run: npm run build
       - run: npm run test:deno
 
   node:
