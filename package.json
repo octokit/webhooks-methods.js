@@ -13,7 +13,7 @@
     "lint:fix": "prettier --write '{src,test,scripts}/**/*' README.md package.json",
     "pretest": "npm run -s lint",
     "test": "npm run -s test:node && npm run -s test:web",
-    "test:node": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest --coverage",
+    "test:node": "vitest run --coverage",
     "test:web": "npm run test:deno && npm run test:browser",
     "pretest:web": "npm run -s build",
     "test:deno": "cd test/deno && deno test",
@@ -30,47 +30,15 @@
   "license": "MIT",
   "devDependencies": {
     "@octokit/tsconfig": "^3.0.0",
-    "@types/jest": "^29.0.0",
     "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^2.0.3",
     "esbuild": "^0.23.0",
-    "glob": "^11.0.0",
-    "jest": "^29.0.0",
-    "prettier": "3.3.2",
+    "prettier": "3.3.3",
     "puppeteer": "^22.0.0",
     "semantic-release": "^24.0.0",
     "semantic-release-plugin-update-version-in-files": "^1.1.0",
-    "ts-jest": "^29.0.0",
-    "typescript": "^5.0.0"
-  },
-  "jest": {
-    "extensionsToTreatAsEsm": [
-      ".ts"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": [
-        "ts-jest",
-        {
-          "tsconfig": "test/tsconfig.test.json",
-          "useESM": true
-        }
-      ]
-    },
-    "coverageThreshold": {
-      "global": {
-        "statements": 100,
-        "branches": 100,
-        "functions": 100,
-        "lines": 100
-      }
-    },
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/test/deno/"
-    ],
-    "testEnvironment": "node",
-    "moduleNameMapper": {
-      "^(.+)\\.jsx?$": "$1"
-    }
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.3"
   },
   "release": {
     "branches": [
