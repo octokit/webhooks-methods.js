@@ -63,7 +63,7 @@ jobs:
       - run: npm ci
       - run: npm run test:node
 
-  summary:
+  test:
     runs-on: ubuntu-latest
     needs:
       - lint
