@@ -8,6 +8,7 @@
   "version": "0.0.0-development",
   "description": "Methods to handle GitHub Webhook requests",
   "scripts": {
+    "bench": "vitest bench --run",
     "build": "node scripts/build.mjs && tsc -p tsconfig.json",
     "lint": "prettier --check '{src,test,scripts}/**/*' README.md package.json",
     "lint:fix": "prettier --write '{src,test,scripts}/**/*' README.md package.json",
