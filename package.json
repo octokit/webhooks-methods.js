@@ -30,7 +30,7 @@
   "author": "Gregor Martynus (https://dev.to/gr2m)",
   "license": "MIT",
   "devDependencies": {
-    "@octokit/tsconfig": "^3.0.0",
+    "@octokit/tsconfig": "^4.0.0",
     "@types/node": "^20.0.0",
     "@vitest/coverage-v8": "^2.0.3",
     "esbuild": "^0.24.0",
