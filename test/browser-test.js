@@ -12,13 +12,15 @@ async function runTests() {
   await page.goto("file:///");
 
   await page.addScriptTag({
-    content: script.replace(
-      `export {
+    content: script
+      .replace(
+        `export {
   sign,
   verify
 };`,
-      "",
-    ).replaceAll("export", ""),
+        "",
+      )
+      .replaceAll("export", ""),
   });
 
   const [signature, verified] = await page.evaluate(async function () {
