@@ -29,6 +29,8 @@ jobs:
         with:
           node-version: lts/*
           cache: npm
+      - name: Disable AppArmor # https://pptr.dev/troubleshooting#issues-with-apparmor-on-ubuntu
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - run: npm ci
       - run: npm run build
       - run: npm run test:browser
