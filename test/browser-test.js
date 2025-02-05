@@ -18,7 +18,7 @@ async function runTests() {
   verify
 };`,
       "",
-    ),
+    ).replaceAll("export", ""),
   });
 
   const [signature, verified] = await page.evaluate(async function () {
