@@ -20,9 +20,7 @@ Deno.test("verify", async () => {
 Deno.test("verify with fallback", async () => {
   const signature =
     "sha256=1b2c16b75bd2a870c114153ccda5bcfca63314bc722fa160d690de133ccbb9db";
-  const actual = await verifyWithFallback("foo", "data", signature, [
-    "secret",
-  ]);
+  const actual = await verifyWithFallback("foo", "data", signature, ["secret"]);
   const expected = true;
   assertEquals(actual, expected);
 });
