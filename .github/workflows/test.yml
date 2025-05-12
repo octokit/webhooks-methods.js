@@ -52,9 +52,9 @@ jobs:
       fail-fast: false
       matrix:
         node_version:
-          - 18
           - 20
           - 22
+          - 24
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Use Node.js ${{ matrix.node_version }}
@@ -74,6 +74,8 @@ jobs:
       - browser
     steps:
       - run: exit 1
-        if: ${{ needs.lint.result != 'success' || needs.node.result != 'success' || needs.browser.result != 'success' || needs.deno.result != 'success' }}
+        if:
+          ${{ needs.lint.result != 'success' || needs.node.result != 'success' ||
+          needs.browser.result != 'success' || needs.deno.result != 'success' }}
       - run: echo ok
     if: ${{ always() }}
