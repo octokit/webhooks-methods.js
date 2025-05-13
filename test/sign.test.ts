@@ -47,9 +47,9 @@ describe("sign", () => {
     });
   });
 
-  it("throws with eventPayload as object", () => {
+  it("throws with eventPayload as object", async () => {
     // @ts-expect-error
-    expect(() => sign(secret, eventPayload)).rejects.toThrow(
+    await expect(() => sign(secret, eventPayload)).rejects.toThrow(
       "[@octokit/webhooks-methods] payload must be a string",
     );
   });
