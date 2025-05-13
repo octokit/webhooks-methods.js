@@ -1,6 +1,6 @@
 import { bench, describe } from "vitest";
-import { verify as verifyNode } from "../src/index.ts";
-import { verify as verifyWeb } from "../src/web.ts";
+import { sign as signNode } from "../src/index.ts";
+import { sign as signWeb } from "../src/web.ts";
 import { toNormalizedJsonString } from "./common.ts";
 
 describe("sign", () => {
