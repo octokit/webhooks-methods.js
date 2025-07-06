@@ -11,7 +11,7 @@ for (let i = 0; i < 255; i++) {
   hexLookUpLowByte[i] = hexLookUp[i & 0x0f];
 }
 
-export function prefixSignature(signature: Uint8Array): Uint8Array {
+export function uint8arrayToSignature(signature: Uint8Array): Uint8Array {
   const prefixedSignature = new Uint8Array(71);
   prefixedSignature[0] = 0x73; // 's'
   prefixedSignature[1] = 0x68; // 'h'
