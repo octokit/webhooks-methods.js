@@ -10,10 +10,10 @@ describe("sign", () => {
   const secret = "mysecret";
 
   bench("node", async () => {
-    await signNode(secret, JSON.stringify(eventPayload));
+    await signNode(secret, eventPayload);
   });
 
   bench("web", async () => {
-    await signWeb(secret, JSON.stringify(eventPayload));
+    await signWeb(secret, eventPayload);
   });
 });
