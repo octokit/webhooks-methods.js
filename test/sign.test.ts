@@ -17,21 +17,21 @@ describe("sign", () => {
 
   it("throws without options throws", async () => {
     // @ts-expect-error
-    await expect(() => sign()).rejects.toThrow(
+    await expect(sign()).rejects.toThrow(
       "[@octokit/webhooks-methods] secret & payload required for sign()",
     );
   });
 
   it("throws without secret", async () => {
     // @ts-ignore
-    await expect(() => sign(undefined, eventPayload)).rejects.toThrow(
+    await expect(sign(undefined, eventPayload)).rejects.toThrow(
       "[@octokit/webhooks-methods] secret & payload required for sign()",
     );
   });
 
   it("throws without eventPayload", async () => {
     // @ts-expect-error
-    await expect(() => sign(secret)).rejects.toThrow(
+    await expect(sign(secret)).rejects.toThrow(
       "[@octokit/webhooks-methods] secret & payload required for sign()",
     );
   });
@@ -49,7 +49,7 @@ describe("sign", () => {
 
   it("throws with eventPayload as object", async () => {
     // @ts-expect-error
-    await expect(() => sign(secret, eventPayload)).rejects.toThrow(
+    await expect(sign(secret, eventPayload)).rejects.toThrow(
       "[@octokit/webhooks-methods] payload must be a string",
     );
   });

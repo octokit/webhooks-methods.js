@@ -19,28 +19,28 @@ describe("verify", () => {
 
   it("verify() without options throws", async () => {
     // @ts-expect-error
-    await expect(() => verify()).rejects.toThrow(
+    await expect(verify()).rejects.toThrow(
       "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   });
 
   it("verify(undefined, eventPayload) without secret throws", async () => {
     // @ts-expect-error
-    await expect(() => verify(undefined, eventPayload)).rejects.toThrow(
+    await expect(verify(undefined, eventPayload)).rejects.toThrow(
       "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   });
 
   it("verify(secret) without eventPayload throws", async () => {
     // @ts-expect-error
-    await expect(() => verify(secret)).rejects.toThrow(
+    await expect(verify(secret)).rejects.toThrow(
       "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   });
 
   it("verify(secret, eventPayload) without options.signature throws", async () => {
     // @ts-expect-error
-    await expect(() => verify(secret, eventPayload)).rejects.toThrow(
+    await expect(verify(secret, eventPayload)).rejects.toThrow(
       "[@octokit/webhooks-methods] secret, eventPayload & signature required",
     );
   });
@@ -93,7 +93,7 @@ describe("verify", () => {
   });
 
   it("verify(secret, eventPayload, signatureSHA256) with JSON eventPayload", async () => {
-    await expect(() =>
+    await expect(
       // @ts-expect-error
       verify(secret, JSONeventPayload, signatureSHA256),
     ).rejects.toThrow(
