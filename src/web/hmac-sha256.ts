@@ -1,16 +1,11 @@
-type HmacSha256Options = {
-  key: Uint8Array;
-  data: Uint8Array;
-  sha256: (data: Uint8Array) => Uint8Array | Promise<Uint8Array>;
-};
+import { sha256 } from "./sha256.js";
 
 const blockSize = 64;
 
-export async function hmacSha256({
-  sha256,
-  data,
-  key,
-}: HmacSha256Options): Promise<Uint8Array> {
+export async function hmacSha256(
+  key: Uint8Array,
+  data: Uint8Array,
+): Promise<Uint8Array> {
   const keyLength = key.length;
   if (keyLength > blockSize) {
     key = await sha256(key);

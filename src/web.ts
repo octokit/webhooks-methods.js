@@ -3,11 +3,11 @@ import { verifyWithFallbackFactory } from "./methods/verify-with-fallback.js";
 import { signFactory } from "./methods/sign.js";
 import { VERSION } from "./version.js";
 
-import { sha256 } from "./web/sha256.js";
+import { hmacSha256 } from "./web/hmac-sha256.js";
 import { timingSafeEqual } from "./web/timing-safe-equal.js";
 
 export const sign = signFactory({
-  sha256,
+  hmacSha256,
 });
 export const verify = verifyFactory({
   sign,
