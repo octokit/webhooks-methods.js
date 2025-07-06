@@ -1,7 +1,8 @@
-const hexLookUp = new Array(255).fill(0);
-for (let i = 0; i < 16; i++) {
-  hexLookUp[i] = i.toString(16).charCodeAt(0);
-}
+// 0-9, a-f hex encoding for Uint8Array signatures
+const hexLookUp = [
+  0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63,
+  0x64, 0x65, 0x66,
+];
 
 const hexLookUpHighByte = new Array(255).fill(0);
 const hexLookUpLowByte = new Array(255).fill(0);
@@ -20,9 +21,12 @@ export function prefixSignature(signature: Uint8Array): Uint8Array {
   prefixedSignature[5] = 0x36; // '6'
   prefixedSignature[6] = 0x3d; // '='
 
-  for (let i = 0, offset = 7; i < signature.length; ++i) {
+  let i = 0,
+    offset = 7;
+
+  while (i < 32) {
     prefixedSignature[offset++] = hexLookUpHighByte[signature[i]];
-    prefixedSignature[offset++] = hexLookUpLowByte[signature[i]];
+    prefixedSignature[offset++] = hexLookUpLowByte[signature[i++]];
   }
   return prefixedSignature;
 }

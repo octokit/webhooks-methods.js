@@ -13,20 +13,22 @@ export async function hmacSha256({
   data,
   key,
 }: HmacSha256Options): Promise<Uint8Array> {
-  if (key.length > blockSize) {
+  const keyLength = key.length;
+  if (keyLength > blockSize) {
     key = await sha256(key);
-  } else if (key.length < blockSize) {
-    const zeroBuffer = new Uint8Array(blockSize).fill(0);
-    zeroBuffer.set(key, 0);
-    key = zeroBuffer;
   }
 
   const oKeyPad = new Uint8Array(blockSize);
   const iKeyPad = new Uint8Array(blockSize);
 
-  for (let i = 0; i < blockSize; i++) {
+  for (let i = 0; i < keyLength; i++) {
     oKeyPad[i] = key[i] ^ 0x5c;
     iKeyPad[i] = key[i] ^ 0x36;
+  }
+
+  for (let i = keyLength; i < blockSize; i++) {
+    oKeyPad[i] = 0x5c;
+    iKeyPad[i] = 0x36;
   }
 
   const innerHash = await sha256(concatUint8Array(iKeyPad, data));
