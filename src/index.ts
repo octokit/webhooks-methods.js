@@ -1,27 +1,16 @@
-export { sign } from "./node/sign.js";
-import { verify } from "./node/verify.js";
-export { verify };
+import { verifyFactory } from "./methods/verify.js";
+import { verifyWithFallbackFactory } from "./methods/verify-with-fallback.js";
+import { signFactory } from "./methods/sign.js";
+import { VERSION } from "./version.js";
 
-export async function verifyWithFallback(
-  secret: string,
-  payload: string,
-  signature: string,
-  additionalSecrets: undefined | string[],
-): Promise<any> {
-  const firstPass = await verify(secret, payload, signature);
+import { timingSafeEqual } from "./node/timing-safe-equal.js";
+import { sha256 } from "./node/sha256.js";
+import { uint8ArrayToHex } from "./node/uint8array-to-hex.js";
 
-  if (firstPass) {
-    return true;
-  }
-
-  if (additionalSecrets !== undefined) {
-    for (const s of additionalSecrets) {
-      const v: boolean = await verify(s, payload, signature);
-      if (v) {
-        return v;
-      }
-    }
-  }
-
-  return false;
-}
+export const sign = signFactory({ sha256, uint8ArrayToHex });
+export const verify = verifyFactory({
+  sign,
+  timingSafeEqual,
+});
+export const verifyWithFallback = verifyWithFallbackFactory({ verify });
+export { VERSION };
