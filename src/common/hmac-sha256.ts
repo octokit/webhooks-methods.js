@@ -1,5 +1,3 @@
-import { concatUint8Array } from "./concat-uint8array.js";
-
 type HmacSha256Options = {
   key: Uint8Array;
   data: Uint8Array;
@@ -18,19 +16,21 @@ export async function hmacSha256({
     key = await sha256(key);
   }
 
-  const oKeyPad = new Uint8Array(blockSize);
-  const iKeyPad = new Uint8Array(blockSize);
+  const iKeyPad = new Uint8Array(blockSize + data.length);
+  const oKeyPad = new Uint8Array(blockSize + 32);
 
   for (let i = 0; i < keyLength; i++) {
-    oKeyPad[i] = key[i] ^ 0x5c;
     iKeyPad[i] = key[i] ^ 0x36;
+    oKeyPad[i] = key[i] ^ 0x5c;
   }
 
   for (let i = keyLength; i < blockSize; i++) {
-    oKeyPad[i] = 0x5c;
     iKeyPad[i] = 0x36;
+    oKeyPad[i] = 0x5c;
   }
 
-  const innerHash = await sha256(concatUint8Array(iKeyPad, data));
-  return sha256(concatUint8Array(oKeyPad, innerHash));
+  iKeyPad.set(data, blockSize);
+  const innerHash = await sha256(iKeyPad);
+  oKeyPad.set(innerHash, blockSize);
+  return sha256(oKeyPad);
 }
