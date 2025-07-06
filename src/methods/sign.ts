@@ -1,19 +1,16 @@
 import { hmacSha256 } from "../common/hmac-sha256.js";
+import { prefixSignature } from "../common/prefix-signature.js";
 import type { Signature, Signer } from "../types.js";
 import { VERSION } from "../version.js";
 
 type SignerFactoryOptions = {
   sha256: (data: Uint8Array) => Uint8Array | Promise<Uint8Array>;
-  uint8ArrayToHex: (value: Uint8Array) => string;
 };
 
-const algorithm = "sha256";
 const textEncoder = new TextEncoder();
+const textDecoder = new TextDecoder();
 
-export function signFactory({
-  sha256,
-  uint8ArrayToHex,
-}: SignerFactoryOptions): Signer {
+export function signFactory({ sha256 }: SignerFactoryOptions): Signer {
   const sign = async function sign(
     secret: string,
     payload: string,
@@ -38,7 +35,7 @@ export function signFactory({
       sha256,
     });
 
-    return `${algorithm}=${uint8ArrayToHex(signature)}`;
+    return textDecoder.decode(prefixSignature(signature)) as Signature;
   };
   sign.VERSION = VERSION;
   return sign;

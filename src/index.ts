@@ -5,9 +5,8 @@ import { VERSION } from "./version.js";
 
 import { timingSafeEqual } from "./node/timing-safe-equal.js";
 import { sha256 } from "./node/sha256.js";
-import { uint8ArrayToHex } from "./node/uint8array-to-hex.js";
 
-export const sign = signFactory({ sha256, uint8ArrayToHex });
+export const sign = signFactory({ sha256 });
 export const verify = verifyFactory({
   sign,
   timingSafeEqual,
