@@ -1,19 +1,25 @@
-const padding = "00000000";
+// 0-9, a-f hex encoding for Uint8Array signatures
+const hexLookUp = [
+  0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63,
+  0x64, 0x65, 0x66,
+];
+
+const hexLookUpHighByte = new Array(256);
+const hexLookUpLowByte = new Array(256);
+for (let i = 0; i < 255; i++) {
+  hexLookUpHighByte[i] = hexLookUp[(i & 0xf0) >> 4];
+  hexLookUpLowByte[i] = hexLookUp[i & 0x0f];
+}
+
+const textDecoder = new TextDecoder();
 
 export function uint8ArrayToHex(value: Uint8Array): string {
-  let digest = "";
-  const view = new DataView(value.buffer, value.byteOffset, value.byteLength);
-  for (let i = 0; i < view.byteLength; i += 4) {
-    // We use getUint32 to reduce the number of iterations (notice the `i += 4`)
-    const value = view.getUint32(i);
-    // toString(16) will transform the integer into the corresponding hex string
-    // but will remove any initial "0"
-    const stringValue = value.toString(16);
-    // One Uint32 element is 4 bytes or 8 hex chars (it would also work with 4
-    // chars for Uint16 and 2 chars for Uint8)
-    const paddedValue = (padding + stringValue).slice(-8);
-    digest += paddedValue;
+  const valueLength = value.length;
+  const result = new Uint8Array(valueLength * 2);
+  let i = 0;
+  while (i < valueLength) {
+    result[i << 1] = hexLookUpHighByte[value[i]];
+    result[(i << 1) + 1] = hexLookUpLowByte[value[i++]];
   }
-
-  return digest;
+  return textDecoder.decode(result);
 }
