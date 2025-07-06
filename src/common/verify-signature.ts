@@ -1,10 +1,10 @@
 import type { Signature } from "../types.js";
 
-const hexRE = /^sha256=[\da-fA-F]{64}$/;
+const signatureRE = /^sha256=[\da-fA-F]{64}$/;
 
-export const verifySignatureString = RegExp.prototype.test.bind(hexRE) as (
-  value: string,
-) => value is `sha256=${string}`;
+export const verifySignatureString = RegExp.prototype.test.bind(
+  signatureRE,
+) as (value: string) => value is `sha256=${string}`;
 /**
  * Verifies if a given value is a valid SHA-256 signature.
  * The signature must start with "sha256=" followed by a 64-character hexadecimal string.
@@ -16,7 +16,7 @@ export const verifySignature = (
   value: string | Uint8Array,
 ): value is typeof value extends string ? Signature : Uint8Array => {
   if (typeof value === "string") {
-    return hexRE.test(value);
+    return verifySignatureString(value);
   } else {
     return verifySignatureUint8Array(value);
   }
@@ -39,13 +39,13 @@ export const verifySignatureUint8Array = (
   }
 
   if (
-    value[6] !== 0x3d || // '=' character
     value[0] !== 0x73 || // 's' character
     value[1] !== 0x68 || // 'h' character
     value[2] !== 0x61 || // 'a' character
     value[3] !== 0x32 || // '2' character
     value[4] !== 0x35 || // '5' character
-    value[5] !== 0x36 // '6' character
+    value[5] !== 0x36 || // '6' character
+    value[6] !== 0x3d // '=' character
   ) {
     return false;
   }
