@@ -1,4 +1,4 @@
-import type { SignatureString } from "../types.js";
+import type { PrefixedSignatureString } from "../types.js";
 
 const hexLookUpHighByte: Record<string, number> = {
   "0": 0x00,
@@ -50,8 +50,8 @@ const hexLookUpLowByte: Record<string, number> = {
   F: 0x0f,
 };
 
-export function signatureStringToUint8Array(
-  prefixedSignature: SignatureString,
+export function prefixedSignatureStringToUint8Array(
+  prefixedSignature: PrefixedSignatureString,
 ): Uint8Array {
   const result = new Uint8Array(32);
 
@@ -61,7 +61,7 @@ export function signatureStringToUint8Array(
   while (i < 32) {
     // Each byte in the Uint8Array is represented by two hex characters
     result[i++] =
-      hexLookUpHighByte[prefixedSignature[offset++]] +
+      hexLookUpHighByte[prefixedSignature[offset++]] |
       hexLookUpLowByte[prefixedSignature[offset++]];
   }
   return result;

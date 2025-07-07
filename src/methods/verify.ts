@@ -1,4 +1,4 @@
-import { signatureStringToUint8Array } from "../common/signature-to-uint8array.js";
+import { prefixedSignatureStringToUint8Array } from "../common/signature-to-uint8array.js";
 import { verifySignatureString } from "../common/verify-signature.js";
 import type { Verifier } from "../types.js";
 import { VERSION } from "../version.js";
@@ -38,7 +38,7 @@ export function verifyFactory({
       return false;
     }
 
-    const signatureBuffer = signatureStringToUint8Array(signature);
+    const signatureBuffer = prefixedSignatureStringToUint8Array(signature);
 
     const secretBuffer = textEncoder.encode(secret);
 

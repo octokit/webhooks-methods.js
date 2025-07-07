@@ -1,5 +1,5 @@
-import { uint8arrayToPrefixedSignature } from "../common/uint8array-to-signature.js";
-import type { SignatureString, Signer } from "../types.js";
+import { uint8arrayToPrefixedSignatureString } from "../common/uint8array-to-signature.js";
+import type { PrefixedSignatureString, Signer } from "../types.js";
 import { VERSION } from "../version.js";
 
 type SignerFactoryOptions = {
@@ -10,13 +10,12 @@ type SignerFactoryOptions = {
 };
 
 const textEncoder = new TextEncoder();
-const textDecoder = new TextDecoder();
 
 export function signFactory({ hmacSha256 }: SignerFactoryOptions): Signer {
   const sign = async function sign(
     secret: string,
     payload: string,
-  ): Promise<SignatureString> {
+  ): Promise<PrefixedSignatureString> {
     if (!secret || !payload) {
       throw new TypeError(
         "[@octokit/webhooks-methods] secret & payload required for sign()",
@@ -36,9 +35,7 @@ export function signFactory({ hmacSha256 }: SignerFactoryOptions): Signer {
       textEncoder.encode(payload),
     );
 
-    return textDecoder.decode(
-      uint8arrayToPrefixedSignature(signature),
-    ) as SignatureString;
+    return uint8arrayToPrefixedSignatureString(signature);
   };
   sign.VERSION = VERSION;
   return sign;

@@ -1,4 +1,4 @@
-import type { SignatureString } from "../types.js";
+import type { PrefixedSignatureString } from "../types.js";
 
 const signatureRE = /^sha256=[\da-fA-F]{64}$/;
 
@@ -14,7 +14,9 @@ export const verifySignatureString = RegExp.prototype.test.bind(
  */
 export const verifySignature = (
   value: string | Uint8Array,
-): value is typeof value extends string ? SignatureString : Uint8Array => {
+): value is typeof value extends string
+  ? PrefixedSignatureString
+  : Uint8Array => {
   if (typeof value === "string") {
     return verifySignatureString(value);
   } else {
