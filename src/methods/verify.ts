@@ -38,18 +38,10 @@ export function verifyFactory({
       return false;
     }
 
-    const signatureBuffer = prefixedSignatureStringToUint8Array(signature);
-
     const secretBuffer = textEncoder.encode(secret);
-
-    const verificationBuffer = await hmacSha256(
-      secretBuffer,
-      textEncoder.encode(eventPayload),
-    );
-
-    if (signatureBuffer.length !== verificationBuffer.length) {
-      return false;
-    }
+    const payloadBuffer = textEncoder.encode(eventPayload);
+    const verificationBuffer = await hmacSha256(secretBuffer, payloadBuffer);
+    const signatureBuffer = prefixedSignatureStringToUint8Array(signature);
 
     return timingSafeEqual(signatureBuffer, verificationBuffer);
   };

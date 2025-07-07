@@ -29,11 +29,9 @@ export function signFactory({ hmacSha256 }: SignerFactoryOptions): Signer {
     }
 
     const secretBuffer = textEncoder.encode(secret);
+    const payloadBuffer = textEncoder.encode(payload);
 
-    const signature = await hmacSha256(
-      secretBuffer,
-      textEncoder.encode(payload),
-    );
+    const signature = await hmacSha256(secretBuffer, payloadBuffer);
 
     return uint8arrayToPrefixedSignatureString(signature);
   };
