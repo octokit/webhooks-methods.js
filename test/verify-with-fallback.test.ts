@@ -1,0 +1,58 @@
+import { describe, it, expect } from "./test-runner.ts";
+import { verifyWithFallback as verifyWithFallbackNode } from "../src/index.ts";
+import { verifyWithFallback as verifyWithFallbackWeb } from "../src/web.ts";
+import { toNormalizedJsonString } from "./common.ts";
+
+const JSONeventPayload = { foo: "bar" };
+const eventPayload = toNormalizedJsonString(JSONeventPayload);
+const secret = "mysecret";
+const signatureSHA256 =
+  "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3";
+
+[
+  ["node", verifyWithFallbackNode],
+  ["web", verifyWithFallbackWeb],
+].forEach((tuple) => {
+  const [environment, verifyWithFallback] = tuple as [
+    string,
+    typeof verifyWithFallbackNode,
+  ];
+
+  describe(environment, () => {
+    describe("verifyWithFallback", () => {
+      it("is a function", () => {
+        expect(typeof verifyWithFallback).toBe("function");
+      });
+
+      it("verifyWithFallback(secret, eventPayload, signatureSHA256, [bogus]) returns true", async () => {
+        const signatureMatches = await verifyWithFallback(
+          secret,
+          eventPayload,
+          signatureSHA256,
+          ["foo"],
+        );
+        expect(signatureMatches).toBe(true);
+      });
+
+      it("verifyWithFallback(bogus, eventPayload, signatureSHA256, [secret]) returns true", async () => {
+        const signatureMatches = await verifyWithFallback(
+          "foo",
+          eventPayload,
+          signatureSHA256,
+          [secret],
+        );
+        expect(signatureMatches).toBe(true);
+      });
+
+      it("verify(bogus, eventPayload, signatureSHA256, [bogus]) returns false", async () => {
+        const signatureMatches = await verifyWithFallback(
+          "foo",
+          eventPayload,
+          signatureSHA256,
+          ["foo"],
+        );
+        expect(signatureMatches).toBe(false);
+      });
+    });
+  });
+});

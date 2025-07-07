@@ -1,12 +1,6 @@
 import { describe, it, expect } from "./test-runner.ts";
-import {
-  verify as verifyNode,
-  verifyWithFallback as verifyWithFallbackNode,
-} from "../src/index.ts";
-import {
-  verify as verifyWeb,
-  verifyWithFallback as verifyWithFallbackWeb,
-} from "../src/web.ts";
+import { verify as verifyNode } from "../src/index.ts";
+import { verify as verifyWeb } from "../src/web.ts";
 import { toNormalizedJsonString } from "./common.ts";
 
 const JSONeventPayload = { foo: "bar" };
@@ -16,14 +10,10 @@ const signatureSHA256 =
   "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3";
 
 [
-  ["node", verifyNode, verifyWithFallbackNode],
-  ["web", verifyWeb, verifyWithFallbackWeb],
+  ["node", verifyNode],
+  ["web", verifyWeb],
 ].forEach((tuple) => {
-  const [environment, verify, verifyWithFallback] = tuple as [
-    string,
-    typeof verifyNode,
-    typeof verifyWithFallbackNode,
-  ];
+  const [environment, verify] = tuple as [string, typeof verifyNode];
 
   describe(environment, () => {
     describe("verify", () => {
@@ -121,42 +111,6 @@ const signatureSHA256 =
         ).rejects.toThrow(
           "[@octokit/webhooks-methods] eventPayload must be a string",
         );
-      });
-    });
-
-    describe("verifyWithFallback", () => {
-      it("is a function", () => {
-        expect(typeof verifyWithFallback).toBe("function");
-      });
-
-      it("verifyWithFallback(secret, eventPayload, signatureSHA256, [bogus]) returns true", async () => {
-        const signatureMatches = await verifyWithFallback(
-          secret,
-          eventPayload,
-          signatureSHA256,
-          ["foo"],
-        );
-        expect(signatureMatches).toBe(true);
-      });
-
-      it("verifyWithFallback(bogus, eventPayload, signatureSHA256, [secret]) returns true", async () => {
-        const signatureMatches = await verifyWithFallback(
-          "foo",
-          eventPayload,
-          signatureSHA256,
-          [secret],
-        );
-        expect(signatureMatches).toBe(true);
-      });
-
-      it("verify(bogus, eventPayload, signatureSHA256, [bogus]) returns false", async () => {
-        const signatureMatches = await verifyWithFallback(
-          "foo",
-          eventPayload,
-          signatureSHA256,
-          ["foo"],
-        );
-        expect(signatureMatches).toBe(false);
       });
     });
   });
