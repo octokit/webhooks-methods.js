@@ -8,13 +8,13 @@ type VerifierFactoryOptions = {
     key: Uint8Array,
     data: Uint8Array,
   ) => Uint8Array | Promise<Uint8Array>;
+  stringToUint8Array: (input: string) => Uint8Array;
   timingSafeEqual: (a: Uint8Array, b: Uint8Array) => boolean;
 };
 
-const textEncoder = new TextEncoder();
-
 export function verifyFactory({
   hmacSha256,
+  stringToUint8Array,
   timingSafeEqual,
 }: VerifierFactoryOptions): Verifier {
   const verify: Verifier = async function verify(
@@ -38,8 +38,8 @@ export function verifyFactory({
       return false;
     }
 
-    const secretBuffer = textEncoder.encode(secret);
-    const payloadBuffer = textEncoder.encode(eventPayload);
+    const secretBuffer = stringToUint8Array(secret);
+    const payloadBuffer = stringToUint8Array(eventPayload);
     const verificationBuffer = await hmacSha256(secretBuffer, payloadBuffer);
     const signatureBuffer = prefixedSignatureStringToUint8Array(signature);
 

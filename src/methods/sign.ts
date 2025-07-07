@@ -7,11 +7,13 @@ type SignerFactoryOptions = {
     key: Uint8Array,
     data: Uint8Array,
   ) => Uint8Array | Promise<Uint8Array>;
+  stringToUint8Array: (input: string) => Uint8Array;
 };
 
-const textEncoder = new TextEncoder();
-
-export function signFactory({ hmacSha256 }: SignerFactoryOptions): Signer {
+export function signFactory({
+  hmacSha256,
+  stringToUint8Array,
+}: SignerFactoryOptions): Signer {
   const sign = async function sign(
     secret: string,
     payload: string,
@@ -28,8 +30,8 @@ export function signFactory({ hmacSha256 }: SignerFactoryOptions): Signer {
       );
     }
 
-    const secretBuffer = textEncoder.encode(secret);
-    const payloadBuffer = textEncoder.encode(payload);
+    const secretBuffer = stringToUint8Array(secret);
+    const payloadBuffer = stringToUint8Array(payload);
 
     const signature = await hmacSha256(secretBuffer, payloadBuffer);
 
