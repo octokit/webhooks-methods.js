@@ -12,6 +12,20 @@ for (let i = 0; i < 255; i++) {
 }
 
 export function uint8arrayToSignature(signature: Uint8Array): Uint8Array {
+  const prefixedSignature = new Uint8Array(64);
+  let i = 0,
+    offset = 0;
+
+  while (i < 32) {
+    prefixedSignature[offset++] = hexLookUpHighByte[signature[i]];
+    prefixedSignature[offset++] = hexLookUpLowByte[signature[i++]];
+  }
+  return prefixedSignature;
+}
+
+export function uint8arrayToPrefixedSignature(
+  signature: Uint8Array,
+): Uint8Array {
   const prefixedSignature = new Uint8Array(71);
   prefixedSignature[0] = 0x73; // 's'
   prefixedSignature[1] = 0x68; // 'h'

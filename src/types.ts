@@ -1,7 +1,7 @@
-export type Signature = `sha256=${string}`;
+export type SignatureString = `sha256=${string}`;
 
 export type Signer = {
-  (secret: string, payload: string): Promise<Signature>;
+  (secret: string, payload: string): Promise<SignatureString>;
   VERSION: string;
 };
 

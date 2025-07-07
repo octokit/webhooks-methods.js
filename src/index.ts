@@ -8,7 +8,7 @@ import { timingSafeEqual } from "./node/timing-safe-equal.js";
 
 export const sign = signFactory({ hmacSha256 });
 export const verify = verifyFactory({
-  sign,
+  hmacSha256,
   timingSafeEqual,
 });
 export const verifyWithFallback = verifyWithFallbackFactory({ verify });
