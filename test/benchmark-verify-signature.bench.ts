@@ -1,22 +1,22 @@
 import { bench, describe } from "vitest";
 import {
-  verifySignature,
-  verifySignatureString,
-  verifySignatureUint8Array,
+  verifyPrefixedSignature,
+  verifyPrefixedSignatureString,
+  verifyPrefixedSignatureUint8Array,
 } from "../src/common/verify-signature.ts";
 
-describe("verifySignature", () => {
+describe("verifyPrefixedSignature", () => {
   const signature =
     "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3";
   const signatureUint8Array = new TextEncoder().encode(signature);
 
-  bench("verifySignature", async () => {
-    verifySignature(signature);
+  bench("verifyPrefixedSignature", async () => {
+    verifyPrefixedSignature(signature);
   });
-  bench("verifySignatureString", async () => {
-    verifySignatureString(signature);
+  bench("verifyPrefixedSignatureString", async () => {
+    verifyPrefixedSignatureString(signature);
   });
-  bench("verifySignatureUint8Array", async () => {
-    verifySignatureUint8Array(signatureUint8Array);
+  bench("verifyPrefixedSignatureUint8Array", async () => {
+    verifyPrefixedSignatureUint8Array(signatureUint8Array);
   });
 });
