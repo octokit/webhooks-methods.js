@@ -1,6 +1,6 @@
 import { bench, describe } from "vitest";
-import { timingSafeEqual as timingSafeEqualNode } from "../src/node/timing-safe-equal.ts";
-import { timingSafeEqual as timingSafeEqualWeb } from "../src/web/timing-safe-equal.ts";
+import { timingSafeEqual as timingSafeEqualNode } from "../../src/node/timing-safe-equal.ts";
+import { timingSafeEqual as timingSafeEqualWeb } from "../../src/web/timing-safe-equal.ts";
 
 describe("timingSafeEqual", () => {
   const eventPayload = JSON.stringify({

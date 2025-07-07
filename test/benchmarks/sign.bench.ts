@@ -1,7 +1,7 @@
 import { bench, describe } from "vitest";
-import { sign as signNode } from "../src/index.ts";
-import { sign as signWeb } from "../src/web.ts";
-import { toNormalizedJsonString } from "./common.ts";
+import { sign as signNode } from "../../src/index.ts";
+import { sign as signWeb } from "../../src/web.ts";
+import { toNormalizedJsonString } from "../common.ts";
 
 describe("sign", () => {
   const eventPayload = toNormalizedJsonString({

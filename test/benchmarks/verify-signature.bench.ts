@@ -3,7 +3,7 @@ import {
   verifyPrefixedSignature,
   verifyPrefixedSignatureString,
   verifyPrefixedSignatureUint8Array,
-} from "../src/common/verify-signature.ts";
+} from "../../src/common/verify-signature.ts";
 
 describe("verifyPrefixedSignature", () => {
   const signature =
