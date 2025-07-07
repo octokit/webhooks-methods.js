@@ -1,5 +1,5 @@
 import { prefixedSignatureStringToUint8Array } from "../common/signature-to-uint8array.js";
-import { verifySignatureString } from "../common/verify-signature.js";
+import { verifyPrefixedSignatureString } from "../common/verify-signature.js";
 import type { Verifier } from "../types.js";
 import { VERSION } from "../version.js";
 
@@ -34,7 +34,7 @@ export function verifyFactory({
       );
     }
 
-    if (verifySignatureString(signature) === false) {
+    if (verifyPrefixedSignatureString(signature) === false) {
       return false;
     }
 
