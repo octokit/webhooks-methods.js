@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { verifyPrefixedSignature } from "../../src/common/verify-signature.js";
+import { describe, it, expect } from "../test-runner.ts";
+import { verifyPrefixedSignature } from "../../src/common/verify-signature.ts";
 
 const textEncoder = new TextEncoder();
 describe("verifyPrefixedSignature", () => {

@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { uint8arrayToPrefixedSignature } from "../../src/common/uint8array-to-signature.js";
+import { describe, it, expect } from "../test-runner.ts";
+import { uint8arrayToPrefixedSignature } from "../../src/common/uint8array-to-signature.ts";
 
 describe("uint8arrayToPrefixedSignature", () => {
   it("should return signature", () => {

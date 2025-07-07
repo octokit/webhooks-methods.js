@@ -18,7 +18,7 @@
     "test:web": "npm run test:deno && npm run test:browser",
     "pretest:web": "npm run -s build",
     "test:bun": "bun test",
-    "test:deno": "cd test/deno && deno test",
+    "test:deno": "deno test --no-check --unstable-sloppy-imports",
     "test:browser": "node test/browser-test.js"
   },
   "repository": "github:octokit/webhooks-methods.js",

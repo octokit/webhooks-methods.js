@@ -3,7 +3,7 @@ import {
   verifySignature,
   verifySignatureString,
   verifySignatureUint8Array,
-} from "../src/common/verify-signature.js";
+} from "../src/common/verify-signature.ts";
 
 describe("verifySignature", () => {
   const signature =

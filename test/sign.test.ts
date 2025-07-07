@@ -1,56 +1,66 @@
-import { describe, it, expect } from "vitest";
-import { sign } from "../src/index.ts";
+import { describe, it, expect } from "./test-runner.ts";
+import { sign as signNode } from "../src/index.ts";
+import { sign as signWeb } from "../src/web.ts";
 
 const eventPayload = {
   foo: "bar",
 };
 const secret = "mysecret";
 
-describe("sign", () => {
-  it("is a function", () => {
-    expect(sign).toBeInstanceOf(Function);
-  });
+[
+  ["node", signNode],
+  ["web", signWeb],
+].forEach((tuple) => {
+  const [environment, sign] = tuple as [string, typeof signNode];
 
-  it("sign.VERSION is set", () => {
-    expect(sign.VERSION).toEqual("0.0.0-development");
-  });
+  describe(environment, () => {
+    describe("sign", () => {
+      it("is a function", () => {
+        expect(typeof sign).toBe("function");
+      });
 
-  it("throws without options throws", async () => {
-    // @ts-expect-error
-    await expect(sign()).rejects.toThrow(
-      "[@octokit/webhooks-methods] secret & payload required for sign()",
-    );
-  });
+      it("sign.VERSION is set", () => {
+        expect(sign.VERSION).toBe("0.0.0-development");
+      });
 
-  it("throws without secret", async () => {
-    // @ts-ignore
-    await expect(sign(undefined, eventPayload)).rejects.toThrow(
-      "[@octokit/webhooks-methods] secret & payload required for sign()",
-    );
-  });
+      it("throws without options throws", async () => {
+        // @ts-expect-error
+        await expect(sign()).rejects.toThrow(
+          "[@octokit/webhooks-methods] secret & payload required for sign()",
+        );
+      });
 
-  it("throws without eventPayload", async () => {
-    // @ts-expect-error
-    await expect(sign(secret)).rejects.toThrow(
-      "[@octokit/webhooks-methods] secret & payload required for sign()",
-    );
-  });
+      it("throws without secret", async () => {
+        // @ts-ignore
+        await expect(sign(undefined, eventPayload)).rejects.toThrow(
+          "[@octokit/webhooks-methods] secret & payload required for sign()",
+        );
+      });
 
-  describe("with eventPayload as string", () => {
-    describe("returns expected sha256 signature", () => {
-      it("sign(secret, eventPayload)", async () => {
-        const signature = await sign(secret, JSON.stringify(eventPayload));
-        expect(signature).toBe(
-          "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
+      it("throws without eventPayload", async () => {
+        // @ts-expect-error
+        await expect(sign(secret)).rejects.toThrow(
+          "[@octokit/webhooks-methods] secret & payload required for sign()",
+        );
+      });
+
+      describe("with eventPayload as string", () => {
+        describe("returns expected sha256 signature", () => {
+          it("sign(secret, eventPayload)", async () => {
+            const signature = await sign(secret, JSON.stringify(eventPayload));
+            expect(signature).toBe(
+              "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
+            );
+          });
+        });
+      });
+
+      it("throws with eventPayload as object", async () => {
+        // @ts-expect-error
+        await expect(sign(secret, eventPayload)).rejects.toThrow(
+          "[@octokit/webhooks-methods] payload must be a string",
         );
       });
     });
-  });
-
-  it("throws with eventPayload as object", async () => {
-    // @ts-expect-error
-    await expect(sign(secret, eventPayload)).rejects.toThrow(
-      "[@octokit/webhooks-methods] payload must be a string",
-    );
   });
 });
