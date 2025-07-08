@@ -1,11 +1,13 @@
 import { strictEqual } from "node:assert";
-
 import { readFile } from "node:fs/promises";
+
 import puppeteer from "puppeteer";
 
 runTests();
 
 async function runTests() {
+  console.log("Running browser tests...");
+
   const script = await readFile("pkg/dist-web/index.js", "utf-8");
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -25,11 +27,7 @@ async function runTests() {
 
   const [signature, verified] = await page.evaluate(async function () {
     const signature = await sign("secret", "data");
-    console.log(signature);
-
     const verified = await verify("secret", "data", signature);
-    console.log(verified);
-
     return [signature, verified];
   });
 
@@ -41,5 +39,5 @@ async function runTests() {
 
   await browser.close();
 
-  console.log("All tests passed.");
+  console.log("All browser tests passed.");
 }

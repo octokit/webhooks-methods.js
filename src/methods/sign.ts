@@ -1,4 +1,4 @@
-import type { PrefixedSignatureString, Signer } from "../types.js";
+import type { Signer } from "../types.js";
 import { isAsyncFunction } from "../common/is-async-function.js";
 import { uint8arrayToPrefixedSignatureString } from "../common/uint8array-to-signature.js";
 import { VERSION } from "../version.js";
@@ -16,10 +16,7 @@ export function signFactory({
 }: SignerFactoryOptions): Signer {
   const hmacSha256IsAsync = isAsyncFunction(hmacSha256);
 
-  const sign = async function sign(
-    secret: string,
-    payload: string,
-  ): Promise<PrefixedSignatureString> {
+  const sign: Signer = async function sign(secret, payload) {
     if (!secret || !payload) {
       throw new TypeError(
         "[@octokit/webhooks-methods] secret & payload required for sign()",

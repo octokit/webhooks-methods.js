@@ -4,16 +4,16 @@ import { sign as signWeb } from "../../src/web.ts";
 import { toNormalizedJsonString } from "../common.ts";
 
 describe("sign", () => {
-  const eventPayload = toNormalizedJsonString({
+  const payload = toNormalizedJsonString({
     foo: "bar",
   });
   const secret = "mysecret";
 
   bench("node", async () => {
-    await signNode(secret, eventPayload);
+    await signNode(secret, payload);
   });
 
   bench("web", async () => {
-    await signWeb(secret, eventPayload);
+    await signWeb(secret, payload);
   });
 });

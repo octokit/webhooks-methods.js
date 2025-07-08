@@ -20,11 +20,7 @@ export function verifyFactory({
 }: VerifierFactoryOptions): Verifier {
   const hmacSha256IsAsync = isAsyncFunction(hmacSha256);
 
-  const verify: Verifier = async function verify(
-    secret: string,
-    payload: string,
-    signature: string,
-  ): Promise<boolean> {
+  const verify: Verifier = async function verify(secret, payload, signature) {
     if (!secret || !payload || !signature) {
       throw new TypeError(
         "[@octokit/webhooks-methods] secret, eventPayload & signature required",
