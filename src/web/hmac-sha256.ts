@@ -1,5 +1,3 @@
-import { sha256 } from "./sha256.js";
-
 const blockSize = 64;
 
 export async function hmacSha256(
@@ -8,7 +6,7 @@ export async function hmacSha256(
 ): Promise<Uint8Array> {
   const keyLength = key.length;
   if (keyLength > blockSize) {
-    key = await sha256(key);
+    key = new Uint8Array(await crypto.subtle.digest("SHA-256", key), 0, 32);
   }
 
   const iKeyPad = new Uint8Array(blockSize + data.length);
@@ -25,7 +23,11 @@ export async function hmacSha256(
   }
 
   iKeyPad.set(data, blockSize);
-  const innerHash = await sha256(iKeyPad);
+  const innerHash = new Uint8Array(
+    await crypto.subtle.digest("SHA-256", iKeyPad),
+    0,
+    32,
+  );
   oKeyPad.set(innerHash, blockSize);
-  return sha256(oKeyPad);
+  return new Uint8Array(await crypto.subtle.digest("SHA-256", oKeyPad), 0, 32);
 }
