@@ -13,7 +13,8 @@
     "lint": "prettier --check '{src,test,scripts}/**/*' README.md package.json",
     "lint:fix": "prettier --write '{src,test,scripts}/**/*' README.md package.json",
     "test": "npm run -s test:node && npm run -s test:deno && npm run test:bun && npm run -s test:browser",
-    "test:browser": "npm run -s build && node test/browser-test.js",
+    "pretest:browser": "npm run build",
+    "test:browser": "node test/browser-test.js",
     "test:bun": "bun test",
     "test:deno": "deno test --no-check --unstable-sloppy-imports",
     "test:node": "vitest run --coverage"
