@@ -13,18 +13,6 @@ for (let i = 0; i < 255; i++) {
   hexLookUpLowByte[i] = hexLookUp[i & 0x0f];
 }
 
-export function uint8arrayToSignature(signature: Uint8Array): Uint8Array {
-  const prefixedSignature = new Uint8Array(64);
-  let i = 0,
-    offset = 0;
-
-  while (i < 32) {
-    prefixedSignature[offset++] = hexLookUpHighByte[signature[i]];
-    prefixedSignature[offset++] = hexLookUpLowByte[signature[i++]];
-  }
-  return prefixedSignature;
-}
-
 export function uint8arrayToPrefixedSignature(
   signature: Uint8Array,
 ): Uint8Array {

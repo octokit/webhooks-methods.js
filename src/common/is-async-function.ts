@@ -1,3 +1,4 @@
+/* c8 ignore next */
 const AsyncFunctionConstructor = (async () => {}).constructor;
 
 export function isAsyncFunction(
