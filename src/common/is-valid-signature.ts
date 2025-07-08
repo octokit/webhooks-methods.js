@@ -2,7 +2,7 @@ import type { PrefixedSignatureString } from "../types.js";
 
 const signatureRE = /^sha256=[\da-fA-F]{64}$/;
 
-export const verifyPrefixedSignatureString = RegExp.prototype.test.bind(
+export const isValidPrefixedSignatureString = RegExp.prototype.test.bind(
   signatureRE,
 ) as (value: string) => value is `sha256=${string}`;
 /**
@@ -12,15 +12,15 @@ export const verifyPrefixedSignatureString = RegExp.prototype.test.bind(
  * @param value - The value to verify.
  * @returns {value is `sha256=${string}|Uint8Array`} `true` if the value is a valid SHA-256 signature, `false` otherwise.
  */
-export const verifyPrefixedSignature = (
+export const isValidPrefixedSignature = (
   value: string | Uint8Array,
 ): value is typeof value extends string
   ? PrefixedSignatureString
   : Uint8Array => {
   if (typeof value === "string") {
-    return verifyPrefixedSignatureString(value);
+    return isValidPrefixedSignatureString(value);
   } else {
-    return verifyPrefixedSignatureUint8Array(value);
+    return isValidPrefixedSignatureUint8Array(value);
   }
 };
 
@@ -33,7 +33,7 @@ for (let i = 0; i < 6; i++) {
   notHexChars[i + 0x41] = false; // A-F
 }
 
-export const verifyPrefixedSignatureUint8Array = (
+export const isValidPrefixedSignatureUint8Array = (
   value: Uint8Array,
 ): value is Uint8Array => {
   if (value.length !== 71) {

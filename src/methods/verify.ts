@@ -1,7 +1,7 @@
 import type { Verifier } from "../types.js";
 import { isAsyncFunction } from "../common/is-async-function.js";
 import { prefixedSignatureStringToUint8Array } from "../common/signature-to-uint8array.js";
-import { verifyPrefixedSignatureString } from "../common/verify-signature.js";
+import { isValidPrefixedSignatureString } from "../common/is-valid-signature.js";
 import { VERSION } from "../version.js";
 
 type VerifierFactoryOptions = {
@@ -33,7 +33,7 @@ export function verifyFactory({
       );
     }
 
-    if (verifyPrefixedSignatureString(signature) === false) {
+    if (isValidPrefixedSignatureString(signature) === false) {
       return false;
     }
 

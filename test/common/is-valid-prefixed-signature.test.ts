@@ -1,16 +1,16 @@
 import { describe, it, expect } from "../test-runner.ts";
-import { verifyPrefixedSignature } from "../../src/common/verify-signature.ts";
+import { isValidPrefixedSignature } from "../../src/common/is-valid-signature.ts";
 
 const textEncoder = new TextEncoder();
-describe("verifyPrefixedSignature", () => {
+describe("isValidPrefixedSignature", () => {
   it("should return false for too short signature", () => {
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda",
       ),
     ).toBe(false);
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         textEncoder.encode(
           "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda",
         ),
@@ -20,12 +20,12 @@ describe("verifyPrefixedSignature", () => {
 
   it("should return false for too long signature", () => {
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3a",
       ),
     ).toBe(false);
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         textEncoder.encode(
           "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3a",
         ),
@@ -35,12 +35,12 @@ describe("verifyPrefixedSignature", () => {
 
   it("should return false for invalid algorithm", () => {
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         "sha258=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
       ),
     ).toBe(false);
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         textEncoder.encode(
           "sha258=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
         ),
@@ -50,7 +50,7 @@ describe("verifyPrefixedSignature", () => {
 
   it("should return false for missing algorithm", () => {
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         textEncoder.encode(
           "4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
         ),
@@ -59,18 +59,18 @@ describe("verifyPrefixedSignature", () => {
   });
 
   it("should return false for empty signature", () => {
-    expect(verifyPrefixedSignature("")).toBe(false);
-    expect(verifyPrefixedSignature(new Uint8Array())).toBe(false);
+    expect(isValidPrefixedSignature("")).toBe(false);
+    expect(isValidPrefixedSignature(new Uint8Array())).toBe(false);
   });
 
   it("should return false for invalid character", () => {
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bdaz",
       ),
     ).toBe(false);
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         textEncoder.encode(
           "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bdaz",
         ),
@@ -80,12 +80,12 @@ describe("verifyPrefixedSignature", () => {
 
   it("should return true for valid signature", () => {
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
       ),
     ).toBe(true);
     expect(
-      verifyPrefixedSignature(
+      isValidPrefixedSignature(
         textEncoder.encode(
           "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3",
         ),
