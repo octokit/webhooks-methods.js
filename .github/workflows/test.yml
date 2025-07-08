@@ -32,18 +32,24 @@ jobs:
       - name: Disable AppArmor # https://pptr.dev/troubleshooting#issues-with-apparmor-on-ubuntu
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - run: npm ci
-      - run: npm run build
       - run: npm run test:browser
+
+  bun:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bun test
 
   deno:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version: v2.x
       - run: npm ci
-      - run: npm run build
       - run: npm run test:deno
 
   node:
@@ -69,13 +75,14 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - lint
-      - node
-      - deno
       - browser
+      - bun
+      - deno
+      - node
     steps:
       - run: exit 1
         if:
-          ${{ needs.lint.result != 'success' || needs.node.result != 'success' ||
+          ${{ needs.lint.result != 'success' || needs.node.result != 'success' || needs.bun.result != 'success' ||
           needs.browser.result != 'success' || needs.deno.result != 'success' }}
       - run: echo ok
     if: ${{ always() }}

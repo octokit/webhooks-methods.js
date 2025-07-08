@@ -12,13 +12,12 @@
     "build": "node scripts/build.mjs && tsc -p tsconfig.json",
     "lint": "prettier --check '{src,test,scripts}/**/*' README.md package.json",
     "lint:fix": "prettier --write '{src,test,scripts}/**/*' README.md package.json",
-    "pretest": "npm run -s lint",
-    "test": "npm run -s test:node && npm run -s test:web",
-    "test:node": "vitest run --coverage",
-    "test:web": "npm run test:deno && npm run test:browser",
-    "pretest:web": "npm run -s build",
-    "test:deno": "cd test/deno && deno test",
-    "test:browser": "node test/browser-test.js"
+    "test": "npm run -s test:node && npm run -s test:deno && npm run test:bun && npm run -s test:browser",
+    "pretest:browser": "npm run build",
+    "test:browser": "node test/browser-test.js",
+    "test:bun": "bun test",
+    "test:deno": "deno test --no-check --unstable-sloppy-imports",
+    "test:node": "vitest run --coverage"
   },
   "repository": "github:octokit/webhooks-methods.js",
   "keywords": [
