@@ -7,7 +7,7 @@ export function verifyWithFallbackFactory({
 }): VerifyWithFallback {
   const verifyWithFallback = async function verifyWithFallback(
     secret: string,
-    payload: string,
+    payload: string | Uint8Array,
     signature: string,
     additionalSecrets: undefined | string[],
   ): Promise<boolean> {

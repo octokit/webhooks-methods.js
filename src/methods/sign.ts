@@ -23,16 +23,21 @@ export function signFactory({
       );
     }
 
-    if (typeof payload !== "string") {
+    let payloadBuffer: Uint8Array;
+
+    if (typeof payload === "string") {
+      payloadBuffer = stringToUint8Array(payload);
+    } else if (payload instanceof Uint8Array) {
+      payloadBuffer = payload;
+    } else {
       throw new TypeError(
-        "[@octokit/webhooks-methods] payload must be a string",
+        "[@octokit/webhooks-methods] payload must be a string or Uint8Array",
       );
     }
 
     const key = createKeyFromSecretIsAsync
       ? await createKeyFromSecret(secret)
       : createKeyFromSecret(secret);
-    const payloadBuffer = stringToUint8Array(payload);
 
     const signature = hmacSha256IsAsync
       ? ((await hmacSha256(key, payloadBuffer)) as Uint8Array)

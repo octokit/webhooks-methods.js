@@ -3,11 +3,13 @@ import { verifyWithFallback as verifyWithFallbackNode } from "../src/index.ts";
 import { verifyWithFallback as verifyWithFallbackWeb } from "../src/web.ts";
 import { toNormalizedJsonString } from "./common.ts";
 
-const JSONeventPayload = { foo: "bar" };
-const eventPayload = toNormalizedJsonString(JSONeventPayload);
+const JSONPayload = { foo: "bar" };
+const payload = toNormalizedJsonString(JSONPayload);
 const secret = "mysecret";
 const signatureSHA256 =
   "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bda3";
+
+const textEncoder = new TextEncoder();
 
 [
   ["node", verifyWithFallbackNode],
@@ -24,30 +26,40 @@ const signatureSHA256 =
         expect(typeof verifyWithFallback).toBe("function");
       });
 
-      it("verifyWithFallback(secret, eventPayload, signatureSHA256, [bogus]) returns true", async () => {
+      it("verifyWithFallback(secret, payload, signatureSHA256, [bogus]) returns true", async () => {
         const signatureMatches = await verifyWithFallback(
           secret,
-          eventPayload,
+          payload,
           signatureSHA256,
           ["foo"],
         );
         expect(signatureMatches).toBe(true);
       });
 
-      it("verifyWithFallback(bogus, eventPayload, signatureSHA256, [secret]) returns true", async () => {
+      it("verifyWithFallback(bogus, payload, signatureSHA256, [secret]) returns true", async () => {
         const signatureMatches = await verifyWithFallback(
           "foo",
-          eventPayload,
+          payload,
           signatureSHA256,
           [secret],
         );
         expect(signatureMatches).toBe(true);
       });
 
-      it("verify(bogus, eventPayload, signatureSHA256, [bogus]) returns false", async () => {
+      it("verifyWithFallback(bogus, payload, signatureSHA256, [secret]) returns true", async () => {
         const signatureMatches = await verifyWithFallback(
           "foo",
-          eventPayload,
+          textEncoder.encode(payload),
+          signatureSHA256,
+          [secret],
+        );
+        expect(signatureMatches).toBe(true);
+      });
+
+      it("verify(bogus, payload, signatureSHA256, [bogus]) returns false", async () => {
+        const signatureMatches = await verifyWithFallback(
+          "foo",
+          payload,
           signatureSHA256,
           ["foo"],
         );

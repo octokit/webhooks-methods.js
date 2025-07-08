@@ -25,13 +25,19 @@ export function verifyFactory({
   const verify: Verifier = async function verify(secret, payload, signature) {
     if (!secret || !payload || !signature) {
       throw new TypeError(
-        "[@octokit/webhooks-methods] secret, eventPayload & signature required",
+        "[@octokit/webhooks-methods] secret, payload & signature required",
       );
     }
 
-    if (typeof payload !== "string") {
+    let payloadBuffer: Uint8Array;
+
+    if (typeof payload === "string") {
+      payloadBuffer = stringToUint8Array(payload);
+    } else if (payload instanceof Uint8Array) {
+      payloadBuffer = payload;
+    } else {
       throw new TypeError(
-        "[@octokit/webhooks-methods] eventPayload must be a string",
+        "[@octokit/webhooks-methods] payload must be a string or Uint8Array",
       );
     }
 
@@ -42,7 +48,6 @@ export function verifyFactory({
     const key = createKeyFromSecretIsAsync
       ? await createKeyFromSecret(secret)
       : createKeyFromSecret(secret);
-    const payloadBuffer = stringToUint8Array(payload);
     const signatureBuffer = prefixedSignatureStringToUint8Array(signature);
 
     return cryptoVerifyIsAsync
