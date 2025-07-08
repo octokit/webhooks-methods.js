@@ -67,7 +67,7 @@ const textEncoder = new TextEncoder();
       it("throws with payload as object", async () => {
         // @ts-expect-error
         await expect(sign(secret, payload)).rejects.toThrow(
-          "[@octokit/webhooks-methods] payload must be a string",
+          "[@octokit/webhooks-methods] payload must be a string or Uint8Array",
         );
       });
     });
