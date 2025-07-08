@@ -1,6 +1,7 @@
+import type { Verifier } from "../types.js";
+import { isAsyncFunction } from "../common/is-async-function.js";
 import { prefixedSignatureStringToUint8Array } from "../common/signature-to-uint8array.js";
 import { verifyPrefixedSignatureString } from "../common/verify-signature.js";
-import type { Verifier } from "../types.js";
 import { VERSION } from "../version.js";
 
 type VerifierFactoryOptions = {
@@ -17,6 +18,8 @@ export function verifyFactory({
   stringToUint8Array,
   timingSafeEqual,
 }: VerifierFactoryOptions): Verifier {
+  const hmacSha256IsAsync = isAsyncFunction(hmacSha256);
+
   const verify: Verifier = async function verify(
     secret: string,
     eventPayload: string,
@@ -40,7 +43,9 @@ export function verifyFactory({
 
     const secretBuffer = stringToUint8Array(secret);
     const payloadBuffer = stringToUint8Array(eventPayload);
-    const verificationBuffer = await hmacSha256(secretBuffer, payloadBuffer);
+    const verificationBuffer = hmacSha256IsAsync
+      ? ((await hmacSha256(secretBuffer, payloadBuffer)) as Uint8Array)
+      : (hmacSha256(secretBuffer, payloadBuffer) as Uint8Array);
     const signatureBuffer = prefixedSignatureStringToUint8Array(signature);
 
     return timingSafeEqual(signatureBuffer, verificationBuffer);
