@@ -4,16 +4,16 @@ import { uint8arrayToPrefixedSignatureString } from "../common/uint8array-to-sig
 import { VERSION } from "../version.js";
 
 type SignerFactoryOptions = {
-  hmacSha256: (
-    key: Uint8Array,
-    data: Uint8Array,
-  ) => Uint8Array | Promise<Uint8Array>;
+  createKeyFromSecret: (secret: string) => any | Promise<any>;
+  hmacSha256: (key: any, data: Uint8Array) => Uint8Array | Promise<Uint8Array>;
   stringToUint8Array: (input: string) => Uint8Array;
 };
 export function signFactory({
+  createKeyFromSecret,
   hmacSha256,
   stringToUint8Array,
 }: SignerFactoryOptions): Signer {
+  const createKeyFromSecretIsAsync = isAsyncFunction(createKeyFromSecret);
   const hmacSha256IsAsync = isAsyncFunction(hmacSha256);
 
   const sign: Signer = async function sign(secret, payload) {
@@ -29,12 +29,14 @@ export function signFactory({
       );
     }
 
-    const secretBuffer = stringToUint8Array(secret);
+    const key = createKeyFromSecretIsAsync
+      ? await createKeyFromSecret(secret)
+      : createKeyFromSecret(secret);
     const payloadBuffer = stringToUint8Array(payload);
 
     const signature = hmacSha256IsAsync
-      ? ((await hmacSha256(secretBuffer, payloadBuffer)) as Uint8Array)
-      : (hmacSha256(secretBuffer, payloadBuffer) as Uint8Array);
+      ? ((await hmacSha256(key, payloadBuffer)) as Uint8Array)
+      : (hmacSha256(key, payloadBuffer) as Uint8Array);
 
     return uint8arrayToPrefixedSignatureString(signature);
   };

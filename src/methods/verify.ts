@@ -5,19 +5,19 @@ import { verifyPrefixedSignatureString } from "../common/verify-signature.js";
 import { VERSION } from "../version.js";
 
 type VerifierFactoryOptions = {
-  hmacSha256: (
-    key: Uint8Array,
-    data: Uint8Array,
-  ) => Uint8Array | Promise<Uint8Array>;
+  createKeyFromSecret: (secret: string) => any | Promise<any>;
+  hmacSha256: (key: any, data: Uint8Array) => Uint8Array | Promise<Uint8Array>;
   stringToUint8Array: (input: string) => Uint8Array;
   timingSafeEqual: (a: Uint8Array, b: Uint8Array) => boolean;
 };
 
 export function verifyFactory({
+  createKeyFromSecret,
   hmacSha256,
   stringToUint8Array,
   timingSafeEqual,
 }: VerifierFactoryOptions): Verifier {
+  const createKeyFromSecretIsAsync = isAsyncFunction(createKeyFromSecret);
   const hmacSha256IsAsync = isAsyncFunction(hmacSha256);
 
   const verify: Verifier = async function verify(secret, payload, signature) {
@@ -37,11 +37,13 @@ export function verifyFactory({
       return false;
     }
 
-    const secretBuffer = stringToUint8Array(secret);
+    const key = createKeyFromSecretIsAsync
+      ? await createKeyFromSecret(secret)
+      : createKeyFromSecret(secret);
     const payloadBuffer = stringToUint8Array(payload);
     const verificationBuffer = hmacSha256IsAsync
-      ? ((await hmacSha256(secretBuffer, payloadBuffer)) as Uint8Array)
-      : (hmacSha256(secretBuffer, payloadBuffer) as Uint8Array);
+      ? ((await hmacSha256(key, payloadBuffer)) as Uint8Array)
+      : (hmacSha256(key, payloadBuffer) as Uint8Array);
     const signatureBuffer = prefixedSignatureStringToUint8Array(signature);
 
     return timingSafeEqual(signatureBuffer, verificationBuffer);
