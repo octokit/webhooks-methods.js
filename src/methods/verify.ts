@@ -22,16 +22,16 @@ export function verifyFactory({
 
   const verify: Verifier = async function verify(
     secret: string,
-    eventPayload: string,
+    payload: string,
     signature: string,
   ): Promise<boolean> {
-    if (!secret || !eventPayload || !signature) {
+    if (!secret || !payload || !signature) {
       throw new TypeError(
         "[@octokit/webhooks-methods] secret, eventPayload & signature required",
       );
     }
 
-    if (typeof eventPayload !== "string") {
+    if (typeof payload !== "string") {
       throw new TypeError(
         "[@octokit/webhooks-methods] eventPayload must be a string",
       );
@@ -42,7 +42,7 @@ export function verifyFactory({
     }
 
     const secretBuffer = stringToUint8Array(secret);
-    const payloadBuffer = stringToUint8Array(eventPayload);
+    const payloadBuffer = stringToUint8Array(payload);
     const verificationBuffer = hmacSha256IsAsync
       ? ((await hmacSha256(secretBuffer, payloadBuffer)) as Uint8Array)
       : (hmacSha256(secretBuffer, payloadBuffer) as Uint8Array);

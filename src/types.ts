@@ -6,7 +6,7 @@ export type Signer = {
 };
 
 export type Verifier = {
-  (secret: string, eventPayload: string, signature: string): Promise<boolean>;
+  (secret: string, payload: string, signature: string): Promise<boolean>;
   VERSION: string;
 };
 
