@@ -6,19 +6,21 @@ import { VERSION } from "../version.js";
 
 type VerifierFactoryOptions = {
   createKeyFromSecret: (secret: string) => any | Promise<any>;
-  hmacSha256: (key: any, data: Uint8Array) => Uint8Array | Promise<Uint8Array>;
+  cryptoVerify(
+    key: any,
+    data: Uint8Array,
+    signature: Uint8Array,
+  ): boolean | Promise<boolean>;
   stringToUint8Array: (input: string) => Uint8Array;
-  timingSafeEqual: (a: Uint8Array, b: Uint8Array) => boolean;
 };
 
 export function verifyFactory({
   createKeyFromSecret,
-  hmacSha256,
+  cryptoVerify,
   stringToUint8Array,
-  timingSafeEqual,
 }: VerifierFactoryOptions): Verifier {
   const createKeyFromSecretIsAsync = isAsyncFunction(createKeyFromSecret);
-  const hmacSha256IsAsync = isAsyncFunction(hmacSha256);
+  const cryptoVerifyIsAsync = isAsyncFunction(cryptoVerify);
 
   const verify: Verifier = async function verify(secret, payload, signature) {
     if (!secret || !payload || !signature) {
@@ -41,12 +43,11 @@ export function verifyFactory({
       ? await createKeyFromSecret(secret)
       : createKeyFromSecret(secret);
     const payloadBuffer = stringToUint8Array(payload);
-    const verificationBuffer = hmacSha256IsAsync
-      ? ((await hmacSha256(key, payloadBuffer)) as Uint8Array)
-      : (hmacSha256(key, payloadBuffer) as Uint8Array);
     const signatureBuffer = prefixedSignatureStringToUint8Array(signature);
 
-    return timingSafeEqual(signatureBuffer, verificationBuffer);
+    return cryptoVerifyIsAsync
+      ? ((await cryptoVerify(key, payloadBuffer, signatureBuffer)) as boolean)
+      : (cryptoVerify(key, payloadBuffer, signatureBuffer) as boolean);
   };
 
   verify.VERSION = VERSION;
