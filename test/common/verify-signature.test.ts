@@ -72,7 +72,7 @@ describe("verifyPrefixedSignature", () => {
     expect(
       verifyPrefixedSignature(
         textEncoder.encode(
-          "sha258=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bdaz",
+          "sha256=4864d2759938a15468b5df9ade20bf161da9b4f737ea61794142f3484236bdaz",
         ),
       ),
     ).toBe(false);

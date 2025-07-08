@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   test: {
     coverage: {
-      include: ["test/**/*.ts"],
+      include: ["src/**/*.ts"],
       reporter: ["html"],
       thresholds: {
         100: true,
