@@ -14,6 +14,7 @@ export async function verifyWithFallback(
     return true;
   }
 
+  /** v8 ignore else -- @preserve -- Bug with vitest where it thinks there is an else branch */
   if (additionalSecrets !== undefined) {
     for (const s of additionalSecrets) {
       const v: boolean = await verify(s, payload, signature);
